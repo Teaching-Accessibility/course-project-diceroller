@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 8,
     backgroundColor: '#0078B4',
-    height: 200,
+    height: 180,
     justifyContent: 'center',
   },
   rollButtonText: {
