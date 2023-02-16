@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from "react-native";
 import { useProfile } from "../Profiles/ProfileContext";
+import { rollDice } from "../utils/rollParser";
 import Die from "./Die";
 import Result from "./Result";
 import RollButton from "./RollButton";
@@ -35,11 +36,13 @@ export default function SimpleRoller() {
   // rollFormula is what is displayed
   const [rollFormula, setRollFormula] = useState("3d6");
   // rollQuery is what is actually confirmed
-  const [rollQuery, setRollQuery] = useState("");
+  const [result, setResult] = useState();
   const { profile } = useProfile();
 
   const dice = ["d4", "d6", "d8", "d10", "d12", "d20", "flat"];
-  const handlePress = () => {};
+  const handlePress = () => {
+    setResult(rollDice(rollFormula));
+  };
   return (
     <View style={styles.container}>
       <View style={styles.rollDisplayContainer}>
@@ -47,7 +50,7 @@ export default function SimpleRoller() {
           {rollFormula}
         </Text>
       </View>
-      <Result rollQuery={rollQuery} />
+      <Result result={result} />
       <RollButton handlePress={handlePress} />
       <View>
         <Text style={{ fontSize: 18, marginVertical: 4, textAlign: "center" }}>{profile.name}</Text>

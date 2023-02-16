@@ -29,16 +29,14 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function Result({ rollQuery }) {
-  const [result, setResult] = useState();
-  useEffect(() => {
-    setResult(rollDice("3d6"));
-  }, [rollQuery]);
+export default function Result({ result }) {
   return (
-    <View style={styles.container}>
+    <View style={styles.container} aria-label="Result">
+      <Text role="heading" style={{ fontSize: 24, textAlign: "center" }}>
+        Result
+      </Text>
       {result && (
         <View style={{ alignItems: "center" }}>
-          <Text style={{ fontSize: 24, textAlign: "center" }}>Result</Text>
           <Text style={{ fontSize: 40, fontWeight: "bold", textAlign: "center" }}>
             {result.sum}
           </Text>

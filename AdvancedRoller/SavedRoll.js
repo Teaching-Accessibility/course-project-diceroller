@@ -25,12 +25,10 @@ export default function SavedRoll({ name, dice }) {
             <Text style={{ fontSize: 20 }}>{dice}</Text>
           ) : (
             dice.map((die, idx) => (
-              <>
-                <Text key={idx} style={{ fontSize: 20 }}>
-                  {die}
-                </Text>
+              <React.Fragment key={idx}>
+                <Text style={{ fontSize: 20 }}>{die}</Text>
                 {idx !== dice.length - 1 && <Seperator />}
-              </>
+              </React.Fragment>
             ))
           )}
         </View>
