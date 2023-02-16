@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from "react-native";
 import { useProfile } from "../Profiles/ProfileContext";
-import { rollDice } from "../utils/rollParser";
+import rollParser, { rollDice } from "../utils/rollParser";
 import Die from "./Die";
 import Result from "./Result";
 import RollButton from "./RollButton";
@@ -34,15 +34,18 @@ const styles = StyleSheet.create({
 
 export default function SimpleRoller() {
   // rollFormula is what is displayed
-  const [rollFormula, setRollFormula] = useState("3d6");
+  const [rollFormula, setRollFormula] = useState("3d6+3d4+2d10");
   // rollQuery is what is actually confirmed
   const [result, setResult] = useState();
   const { profile } = useProfile();
 
   const dice = ["d4", "d6", "d8", "d10", "d12", "d20", "flat"];
   const handlePress = () => {
-    setResult(rollDice(rollFormula));
+
+    setResult(rollParser(rollFormula));
+
   };
+  // console.log(result)
   return (
     <View style={styles.container}>
       <View style={styles.rollDisplayContainer}>
