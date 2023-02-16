@@ -1,6 +1,6 @@
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import React from 'react';
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import React from "react";
 import {
   SafeAreaView,
   ScrollView,
@@ -9,7 +9,7 @@ import {
   Text,
   useColorScheme,
   View,
-} from 'react-native';
+} from "react-native";
 
 import {
   Colors,
@@ -17,14 +17,14 @@ import {
   Header,
   LearnMoreLinks,
   ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-import AdvancedRoller from './AdvancedRoller/AdvancedRoller';
-import History from './History/History';
-import Home from './Home';
-import {ProfileContextProvider} from './Profiles/ProfileContext';
-import Profiles from './Profiles/Profiles';
-import Settings from './Settings/Settings';
-import SimpleRoller from './SimpleRoller/SimpleRoller';
+} from "react-native/Libraries/NewAppScreen";
+import AdvancedRoller from "./AdvancedRoller/AdvancedRoller";
+import History from "./History/History";
+import Home from "./Home";
+import { ProfileContextProvider } from "./Profiles/ProfileContext";
+import Profiles from "./Profiles/Profiles";
+import Settings from "./Settings/Settings";
+import SimpleRoller from "./SimpleRoller/SimpleRoller";
 
 function App() {
   const Stack = createNativeStackNavigator();

@@ -1,4 +1,4 @@
-export default rollParser = rollQuery => {
+export default rollParser = (rollQuery) => {
   // Should be able to work on arbitrarily large strings (probably set limit somewhere else though)
   // Split by spaces, go through sequentially
   // call rollDice on all strings with "d"
@@ -8,11 +8,11 @@ export default rollParser = rollQuery => {
 
 // Param: Roll a die or set of a single kind of dice. Always returns an array for rolls
 // Example: 1d6, 2d8, 1dF, 1d9
-export const rollDice = dice => {
+export const rollDice = (dice) => {
   // Probably gonna be a kind of roll that doesn't use d
   // Eventually account for weirder dice like fudge/fate
   // Eventually return additional array with information like max/min numbers rolled, thresholds
-  const components = dice.split('d');
+  const components = dice.split("d");
   if (components.length !== 2) {
     throw `Incorrect die string passed to rollDie: ${dice}`;
   }
@@ -24,11 +24,11 @@ export const rollDice = dice => {
     rolls.push(roll);
     sum += roll;
   }
-  return {rolls, sum, query: dice};
+  return { rolls, sum, query: dice };
 };
 
 // Generates number between 1 and max, inclusive
-const getRandInt = max => {
+const getRandInt = (max) => {
   if (max < 1) {
     throw `Invalid upper bound passed to getRandInt: ${max}`;
   }

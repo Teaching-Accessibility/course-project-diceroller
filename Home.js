@@ -1,5 +1,5 @@
-import React from 'react';
-import {Text, View, Button, TouchableOpacity, StyleSheet} from 'react-native';
+import React from "react";
+import { Text, View, Button, TouchableOpacity, StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   // TODO: More dynamic sizing for different screen sizes/orientations
@@ -7,23 +7,23 @@ const styles = StyleSheet.create({
     elevation: 8,
     borderRadius: 10,
     margin: 6,
-    backgroundColor: '#0078B4',
+    backgroundColor: "#0078B4",
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   navButtonText: {
     fontSize: 18,
-    color: '#fff',
-    fontWeight: 'bold',
-    alignSelf: 'center',
-    textTransform: 'uppercase',
+    color: "#fff",
+    fontWeight: "bold",
+    alignSelf: "center",
+    textTransform: "uppercase",
   },
 });
 
-const NavigationButton = ({navigation, name}) => {
+const NavigationButton = ({ navigation, name }) => {
   // Replace with custom button so that we can increase height
   return (
-    <View style={{flex: 1}} accessibilityHint={`Navigate to ${name}`}>
+    <View style={{ flex: 1 }} accessibilityHint={`Navigate to ${name}`}>
       <TouchableOpacity
         onPress={() => navigation.navigate(name)}
         style={styles.navButtonContainer}
@@ -35,12 +35,12 @@ const NavigationButton = ({navigation, name}) => {
   );
 };
 
-export default function Home({navigation}) {
+export default function Home({ navigation }) {
   return (
     <View
       style={{
-        flexDirection: 'column',
-        height: '100%',
+        flexDirection: "column",
+        height: "100%",
       }}>
       <NavigationButton navigation={navigation} name="Simple Roller" />
       <NavigationButton navigation={navigation} name="Advanced Roller" />

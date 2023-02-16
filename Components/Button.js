@@ -1,12 +1,12 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#2196F3',
+    backgroundColor: "#2196F3",
     borderRadius: 10,
-    justifyContent: 'center',
-    color: 'white',
+    justifyContent: "center",
+    color: "white",
   },
 });
 
@@ -26,9 +26,9 @@ export default Button = ({
         <Text
           style={{
             fontSize: 24,
-            color: '#fff',
-            textAlign: 'center',
-            textAlignVertical: 'center',
+            color: "#fff",
+            textAlign: "center",
+            textAlignVertical: "center",
           }}>
           {children}
         </Text>
