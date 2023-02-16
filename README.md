@@ -5,6 +5,7 @@
 - John Bomann
   - Set up github project and boilerplate
   - Created home navigation page, implemented navigation
+  - Partially set up rollParser
   - Created simple roller page UI, implemented some features
   - Created advanced roller page UI, implemented some features
   - Created profile context hook for use throughout project, since a lot of the components are dependent on the profile's configurations
@@ -36,3 +37,8 @@
 
 - Option to split up or combine dice when creating a roll formula. e.g. Adding 1d20, then 2d6, then 1d20 outputs "2d20 + 2d6" or "1d20 + 2d6 + 1d20"?
 - Swiping horizontally on the Result box will open history
+
+## UI Documentation
+
+This seems like the easiest way to share images
+https://docs.google.com/document/d/1wTtnnku08BUEh8jqhA4uANRJlab9ikZGfmmSNdpyC2k/edit?usp=sharing
