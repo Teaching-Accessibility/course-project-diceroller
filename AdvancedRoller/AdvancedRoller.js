@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, TextInput, View, Button, TouchableOpacity } from "react-native";
-import { useProfile } from "../Profiles/ProfileContext";
+import { useProfiles } from "../Profiles/ProfileContext";
 import RollButton from "../SimpleRoller/RollButton";
 import SavedRoll from "./SavedRoll";
 
@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
 });
 
 export default function AdvancedRoller() {
-  const { profile } = useProfile();
+  const { profile } = useProfiles();
   const [rollFormula, setRollFormula] = useState("3d6");
   const [rollQuery, setRollQuery] = useState("");
 

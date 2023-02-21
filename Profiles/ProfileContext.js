@@ -4,15 +4,83 @@ import { v4 as uuid } from "uuid";
 
 const ProfileContext = createContext();
 
+const updateProfiles = async (profiles) => {
+  try {
+    await storeData("profiles", profiles);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 const reducer = (state, action) => {
+  let profiles;
   switch (action.type) {
     // Initial load
     case "INIT":
       return action.payload;
     case "ADD_PROFILE":
-      return [...state, action.payload];
+      profiles = [...state, action.payload];
+    case "UPDATE_PROFILE":
+      // {profile}
+      profiles = state.map((profile) =>
+        profile.id === action.payload.id ? action.payload : profile
+      );
+      updateProfiles(profiles);
     case "REMOVE_PROFILE":
-      return state.filter((profile) => profile.id !== action.payload.id);
+      profiles = state.filter((profile) => profile.id !== action.payload.id);
+      updateProfiles(profiles);
+    case "HISTORY_PUSH":
+      // {roll, profileId}
+      profiles = state.map((profile) => {
+        if (profile.id === action.payload.profileId) {
+          return {
+            ...profile,
+            history: [...state.history, { ...action.payload.roll, id: uuid() }],
+          };
+        } else {
+          return profile;
+        }
+      });
+      updateProfiles(profiles);
+    case "HISTORY_REMOVE":
+      // {historyId, profileId}
+      profiles = state.map((profile) => {
+        if (profile.id === action.payload.profileId) {
+          return { ...profile, history: profile.history.filter((roll) => roll.id !== historyId) };
+        } else {
+          return profile;
+        }
+      });
+      updateProfiles(profiles);
+    case "ROLL_PUSH":
+      // {profileId, roll}
+      profiles = state.map((profile) => {
+        if (profile.id === action.payload.profileId) {
+          return {
+            ...profile,
+            savedRolls: [...state.savedRolls, { ...action.payload.roll, id: uuid() }],
+          };
+        } else {
+          return profile;
+        }
+      });
+      updateProfiles(profiles);
+    case "ROLL_REMOVE":
+      // {rollId, profileId}
+      profiles = state.map((profile) => {
+        if (profile.id === action.payload.profileId) {
+          return {
+            ...profile,
+            savedRolls: profile.savedRolls.filter((roll) => roll.id !== rollId),
+          };
+        } else {
+          return profile;
+        }
+      });
+      updateProfiles(profiles);
+
+    default:
+      throw `Unknown profiles action type: ${action.type}`;
   }
 };
 
@@ -51,7 +119,7 @@ export const ProfileContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const initProfiles = async (defaultProfile) => {
+    const initProfiles = async () => {
       let profiles = await getData("profiles");
       // If nothing stored, store it
       if (profiles === null) {
@@ -76,19 +144,6 @@ export const ProfileContextProvider = ({ children }) => {
   const [profiles, profilesDispatch] = useReducer(reducer, null);
   const profile = profiles?.find((profile) => profile.id === currentProfile);
 
-  const updateStoredProfiles = async () => {
-    const newProfiles = profiles.map((mappedProfile) => {
-      if (mappedProfile.id === profile.id) {
-        return profile;
-      } else {
-        return mappedProfile;
-      }
-    });
-    await storeData("profiles", newProfiles);
-  };
-
-  const changeProfile = () => {};
-
   return (
     <ProfileContext.Provider value={{ profile, profilesDispatch, profiles, setCurrentProfile }}>
       {children}
@@ -96,4 +151,4 @@ export const ProfileContextProvider = ({ children }) => {
   );
 };
 
-export const useProfile = () => useContext(ProfileContext);
+export const useProfiles = () => useContext(ProfileContext);

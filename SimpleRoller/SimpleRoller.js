@@ -1,7 +1,7 @@
 import React, { useReducer, useState } from "react";
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from "react-native";
 import { Directions, Gesture, GestureDetector } from "react-native-gesture-handler";
-import { useProfile } from "../Profiles/ProfileContext";
+import { useProfiles } from "../Profiles/ProfileContext";
 import rollParser, { rollDice } from "../utils/rollParser";
 import Die from "./Die";
 import Result from "./Result";
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
 });
 
 export default function SimpleRoller() {
-  const { profile } = useProfile();
+  const { profile } = useProfiles();
   const [selectedDie, setSelectedDie] = useState(null);
   const [rollQuery, setRollQuery] = useState(() =>
     profile.dice.map((die) => ({ type: die, count: 0 }))
