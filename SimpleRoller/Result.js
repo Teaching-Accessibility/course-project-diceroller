@@ -30,8 +30,8 @@ const styles = StyleSheet.create({
 });
 
 //input: RollBase output from DiceRoller
-export default function Result({result}) {
-  //console.log(result.dice[0].die)
+export default function Result({ result }) {
+  // TODO: Add clear function
   return (
     <View style={styles.container} aria-label="Result">
       <Text role="heading" style={{ fontSize: 24, textAlign: "center" }}>
@@ -45,16 +45,18 @@ export default function Result({result}) {
           {/* Eventually, every dice group gets its own roll container */}
           {result.dice.map((group, idx) => (
             <View key={"group" + idx} style={styles.rollsContainer}>
-            <View style={styles.rollGroup}>
-              {group.rolls.map((rolls, idx) => (
-                <Text key={"roll" + group.order + rolls.order} style={{ fontSize: 22 }}>
-                  {rolls.roll}
-                </Text>
-              ))}
+              <View style={styles.rollGroup}>
+                {group.rolls.map((rolls, idx) => (
+                  <Text key={"roll" + group.order + rolls.order} style={{ fontSize: 22 }}>
+                    {rolls.roll}
+                  </Text>
+                ))}
+              </View>
+              <Text style={{ textAlign: "center", fontSize: 18 }}>
+                {group.rolls.length + "d" + group.die.value}
+              </Text>
             </View>
-            <Text style={{ textAlign: "center", fontSize: 18 }}>{group.rolls.length + "d" + group.die.value}</Text>
-          </View>
-          )) }
+          ))}
         </View>
       )}
     </View>

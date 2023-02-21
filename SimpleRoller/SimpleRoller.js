@@ -38,10 +38,8 @@ const styles = StyleSheet.create({
 export default function SimpleRoller() {
   const { profile } = useProfiles();
   const [selectedDie, setSelectedDie] = useState(null);
-  const [rollQuery, setRollQuery] = useState(() =>
-    profile.dice.map((die) => ({ type: die, count: 0 }))
-  );
-  // const [rollFormula, setRollFormula] = useState("3d6");
+  const initialQuery = profile.dice.map((die) => ({ type: die, count: 0 }));
+  const [rollQuery, setRollQuery] = useState(() => initialQuery);
   const [result, setResult] = useState();
 
   // Die is an element from dice, amount is a positive or negative #

@@ -4,11 +4,19 @@ import { v4 as uuid } from "uuid";
 
 const ProfileContext = createContext();
 
-const updateProfiles = async (profiles) => {
+const getData = async (key) => {
   try {
-    await storeData("profiles", profiles);
+    const data = await AsyncStorage.getItem(key);
+    return JSON.parse(data);
   } catch (error) {
-    console.error(error);
+    console.error("Error getting data:", error);
+  }
+};
+const storeData = async (key, data) => {
+  try {
+    await AsyncStorage.setItem(key, JSON.stringify(data));
+  } catch (error) {
+    console.error("Error storing data:", error);
   }
 };
 
@@ -25,10 +33,10 @@ const reducer = (state, action) => {
       profiles = state.map((profile) =>
         profile.id === action.payload.id ? action.payload : profile
       );
-      updateProfiles(profiles);
+      storeData("profiles", profiles);
     case "REMOVE_PROFILE":
       profiles = state.filter((profile) => profile.id !== action.payload.id);
-      updateProfiles(profiles);
+      storeData("profiles", profiles);
     case "HISTORY_PUSH":
       // {roll, profileId}
       profiles = state.map((profile) => {
@@ -41,7 +49,7 @@ const reducer = (state, action) => {
           return profile;
         }
       });
-      updateProfiles(profiles);
+      storeData("profiles", profiles);
     case "HISTORY_REMOVE":
       // {historyId, profileId}
       profiles = state.map((profile) => {
@@ -51,7 +59,7 @@ const reducer = (state, action) => {
           return profile;
         }
       });
-      updateProfiles(profiles);
+      storeData("profiles", profiles);
     case "ROLL_PUSH":
       // {profileId, roll}
       profiles = state.map((profile) => {
@@ -64,7 +72,7 @@ const reducer = (state, action) => {
           return profile;
         }
       });
-      updateProfiles(profiles);
+      storeData("profiles", profiles);
     case "ROLL_REMOVE":
       // {rollId, profileId}
       profiles = state.map((profile) => {
@@ -77,7 +85,7 @@ const reducer = (state, action) => {
           return profile;
         }
       });
-      updateProfiles(profiles);
+      storeData("profiles", profiles);
 
     default:
       throw `Unknown profiles action type: ${action.type}`;
@@ -88,7 +96,7 @@ const reducer = (state, action) => {
 const defaultProfile = {
   id: "13",
   name: "Test Profile",
-  systemName: "D&D",
+  system: "D&D 5e",
   dice: ["d20", "d12", "d10", "d8", "d6", "d4", "flat"],
   // Create dictionary with functions correlating to the names
   preRollModifiers: ["Advantage", "Disadvantage", "Exploding"],
@@ -102,24 +110,10 @@ const defaultProfile = {
 };
 
 export const ProfileContextProvider = ({ children }) => {
-  const getData = async (key) => {
-    try {
-      const data = await AsyncStorage.getItem(key);
-      return JSON.parse(data);
-    } catch (error) {
-      console.error("Error getting data:", error);
-    }
-  };
-  const storeData = async (key, data) => {
-    try {
-      await AsyncStorage.setItem(key, JSON.stringify(data));
-    } catch (error) {
-      console.error("Error storing data:", error);
-    }
-  };
-
   useEffect(() => {
     const initProfiles = async () => {
+      // Uncomment, reload, then re-comment below line to update saved defaultProfile
+      // await storeData("profiles", [defaultProfile]);
       let profiles = await getData("profiles");
       // If nothing stored, store it
       if (profiles === null) {
@@ -144,8 +138,13 @@ export const ProfileContextProvider = ({ children }) => {
   const [profiles, profilesDispatch] = useReducer(reducer, null);
   const profile = profiles?.find((profile) => profile.id === currentProfile);
 
+  const switchCurrentProfile = (id) => {
+    setCurrentProfile(id);
+    storeData("currentProfile", id);
+  };
+
   return (
-    <ProfileContext.Provider value={{ profile, profilesDispatch, profiles, setCurrentProfile }}>
+    <ProfileContext.Provider value={{ profile, profilesDispatch, profiles, switchCurrentProfile }}>
       {children}
     </ProfileContext.Provider>
   );
