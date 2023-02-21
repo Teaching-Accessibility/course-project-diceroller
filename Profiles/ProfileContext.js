@@ -6,6 +6,7 @@ export const ProfileContextProvider = ({ children }) => {
   // Eventually want to set profile at app launch, not have default in here
   const defaultProfile = {
     name: "Test Profile",
+    systemName: "D&D",
     // Create dictionary with functions correlating to the names
     preRollModifiers: ["Advantage", "Disadvantage", "Exploding"],
     postRollModifiers: [],
@@ -16,6 +17,7 @@ export const ProfileContextProvider = ({ children }) => {
     ],
     history: [],
   };
+  // setProfile(profile.history = history.pushState(newRoll))
   const [profile, setProfile] = useState(defaultProfile);
 
   return (

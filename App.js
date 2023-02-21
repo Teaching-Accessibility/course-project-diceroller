@@ -10,6 +10,7 @@ import {
   useColorScheme,
   View,
 } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import {
   Colors,
@@ -30,18 +31,20 @@ function App() {
   const Stack = createNativeStackNavigator();
 
   return (
-    <ProfileContextProvider>
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name="Home" component={Home} />
-          <Stack.Screen name="Simple Roller" component={SimpleRoller} />
-          <Stack.Screen name="Advanced Roller" component={AdvancedRoller} />
-          <Stack.Screen name="History" component={History} />
-          <Stack.Screen name="Profiles" component={Profiles} />
-          <Stack.Screen name="Settings" component={Settings} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </ProfileContextProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <ProfileContextProvider>
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name="Simple Roller" component={SimpleRoller} />
+            <Stack.Screen name="Advanced Roller" component={AdvancedRoller} />
+            <Stack.Screen name="History" component={History} />
+            <Stack.Screen name="Profiles" component={Profiles} />
+            <Stack.Screen name="Settings" component={Settings} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </ProfileContextProvider>
+    </GestureHandlerRootView>
   );
 }
 

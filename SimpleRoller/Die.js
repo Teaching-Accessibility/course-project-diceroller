@@ -18,12 +18,15 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function Die({ type }) {
+export default function Die({ type, selected, handlePress }) {
   // Add accessibility action 'increment'/'decrement' for the die action
+
   return (
     <View style={styles.dieContainer}>
-      <TouchableOpacity>
-        <Text style={styles.dieText} numberOfLines={1}>
+      <TouchableOpacity onPress={handlePress}>
+        <Text
+          style={{ ...styles.dieText, color: selected === type ? "white" : undefined }}
+          numberOfLines={1}>
           {/* Eventually replace text with images */}
           {type}
         </Text>
