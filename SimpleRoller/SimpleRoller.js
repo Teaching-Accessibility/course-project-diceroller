@@ -36,12 +36,13 @@ const styles = StyleSheet.create({
 });
 
 export default function SimpleRoller() {
-  const dice = ["d20", "d12", "d10", "d8", "d6", "d4", "flat"];
+  const { profile } = useProfile();
   const [selectedDie, setSelectedDie] = useState(null);
-  const [rollQuery, setRollQuery] = useState(() => dice.map((die) => ({ type: die, count: 0 })));
+  const [rollQuery, setRollQuery] = useState(() =>
+    profile.dice.map((die) => ({ type: die, count: 0 }))
+  );
   // const [rollFormula, setRollFormula] = useState("3d6");
   const [result, setResult] = useState();
-  const { profile } = useProfile();
 
   // Die is an element from dice, amount is a positive or negative #
   const updateRollQuery = (die, amount) => {
@@ -57,7 +58,9 @@ export default function SimpleRoller() {
     );
   };
 
+  // Get dice to the left and right of current
   const getAdjacentDie = () => {
+    const dice = profile.dice;
     const idx = dice.findIndex((die) => die === selectedDie);
     const leftIdx = idx === 0 ? dice.length - 1 : idx - 1;
     const rightIdx = idx === dice.length - 1 ? 0 : idx + 1;
@@ -108,7 +111,7 @@ export default function SimpleRoller() {
   const handleDiePress = (type) => {
     setSelectedDie(type);
   };
-  console.log(result);
+
   const gesture = Gesture.Exclusive(
     increment5,
     decrement5,
@@ -149,7 +152,7 @@ export default function SimpleRoller() {
             {profile.name}
           </Text>
           <View style={styles.diceContainer}>
-            {dice.map((die) => (
+            {profile.dice.map((die) => (
               <Die key={die} type={die} selected={selectedDie} handlePress={handleDiePress} />
             ))}
           </View>
