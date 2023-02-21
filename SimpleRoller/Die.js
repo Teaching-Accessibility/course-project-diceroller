@@ -3,9 +3,9 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 const styles = StyleSheet.create({
   dieContainer: {
-    flex: 1,
+    minWidth: "22%",
     backgroundColor: "#B1DBEF",
-    marginHorizontal: 2,
+    margin: 2,
     borderRadius: 5,
   },
   dieText: {
@@ -14,7 +14,6 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     marginLeft: "auto",
     marginRight: "auto",
-    // textAlign: 'center',
   },
 });
 
@@ -23,7 +22,7 @@ export default function Die({ type, selected, handlePress }) {
 
   return (
     <View style={styles.dieContainer}>
-      <TouchableOpacity onPress={handlePress}>
+      <TouchableOpacity onPress={() => handlePress(type)}>
         <Text
           style={{ ...styles.dieText, color: selected === type ? "white" : undefined }}
           numberOfLines={1}>

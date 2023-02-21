@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useReducer, useState } from "react";
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from "react-native";
 import { Directions, Gesture, GestureDetector } from "react-native-gesture-handler";
 import { useProfile } from "../Profiles/ProfileContext";
@@ -30,63 +30,116 @@ const styles = StyleSheet.create({
   diceContainer: {
     flexDirection: "row",
     justifyContent: "center",
+    flexWrap: "wrap",
+    width: "100%",
   },
 });
 
 export default function SimpleRoller() {
-  const dice = ["d4", "d6", "d8", "d10", "d12", "d20", "flat"];
+  const dice = ["d20", "d12", "d10", "d8", "d6", "d4", "flat"];
   const [selectedDie, setSelectedDie] = useState(null);
-  const [roll, setRoll] = useState(() => {
-    const values = {};
-    dice.forEach((die) => {
-      values[die] = 0;
-    });
-    return values;
-  });
+  const [rollQuery, setRollQuery] = useState(() => dice.map((die) => ({ type: die, count: 0 })));
   // const [rollFormula, setRollFormula] = useState("3d6");
   const [result, setResult] = useState();
   const { profile } = useProfile();
 
-  const exampleRoll = [
-    { die: "d6", count: 3 },
-    { die: "d20", count: 2, preModifiers: ["advantage"] },
-    { die: "d4", count: -1, preModifiers: ["reroll-lowest"] },
-  ];
-  const rollFormula = (() => {})();
+  // Die is an element from dice, amount is a positive or negative #
+  const updateRollQuery = (die, amount) => {
+    setRollQuery((prev) =>
+      prev.map((queryDie) => {
+        if (queryDie.type === die) {
+          const newCount = queryDie.count + amount;
+          return { ...queryDie, count: newCount };
+        } else {
+          return queryDie;
+        }
+      })
+    );
+  };
 
-  const swipeUp = Gesture.Fling()
+  const getAdjacentDie = () => {
+    const idx = dice.findIndex((die) => die === selectedDie);
+    const leftIdx = idx === 0 ? dice.length - 1 : idx - 1;
+    const rightIdx = idx === dice.length - 1 ? 0 : idx + 1;
+    return { left: dice[leftIdx], right: dice[rightIdx] };
+  };
+
+  // Handle increment / decrement
+  const increment1 = Gesture.Fling()
     .direction(Directions.UP)
-    .onEnd((e) => {
-      if (e.numberOfPointers === 1) {
-      } else {
-      }
+    .numberOfPointers(1)
+    .onEnd(() => {
+      updateRollQuery(selectedDie, 1);
     });
-  const swipeDown = Gesture.Fling()
+  const increment5 = Gesture.Fling()
+    .direction(Directions.UP)
+    .numberOfPointers(2)
+    .onEnd(() => {
+      updateRollQuery(selectedDie, 5);
+    });
+  const decrement1 = Gesture.Fling()
+    .direction(Directions.DOWN)
+    .numberOfPointers(1)
+    .onEnd((e) => {
+      updateRollQuery(selectedDie, -1);
+    });
+  const decrement5 = Gesture.Fling()
     .direction(Directions.DOWN)
     .numberOfPointers(2)
     .onEnd((e) => {
-      if (e.numberOfPointers === 1) {
-      } else {
-      }
+      updateRollQuery(selectedDie, -5);
+    });
+
+  // Handle die switching
+  const navigateLeft = Gesture.Fling()
+    .direction(Directions.LEFT)
+    .onEnd(() => {
+      setSelectedDie(getAdjacentDie().left);
+    });
+  const navigateRight = Gesture.Fling()
+    .direction(Directions.RIGHT)
+    .onEnd(() => {
+      setSelectedDie(getAdjacentDie().right);
     });
 
   const handlePress = () => {
-
     setResult(rollParser(rollFormula));
-
   };
   const handleDiePress = (type) => {
     setSelectedDie(type);
   };
 
-  const gesture = Gesture.Exclusive(swipeUp, swipeDown);
+  const gesture = Gesture.Exclusive(
+    increment5,
+    decrement5,
+    increment1,
+    decrement1,
+    navigateLeft,
+    navigateRight
+  );
+
+  // Create string to display in text field
+  const rollDisplay = (() => {
+    let displayStr = "";
+
+    rollQuery.forEach((die, idx) => {
+      if (die.count) {
+        // Add +/- sign to start
+        if (displayStr !== "" || die.count < 0) {
+          displayStr += die.count < 0 ? " - " : " + ";
+        }
+        displayStr += Math.abs(die.count) + (die.type === "flat" ? "" : die.type);
+      }
+    });
+    return displayStr;
+  })();
 
   return (
     <GestureDetector gesture={gesture}>
       <View style={styles.container} onResponderStart={() => console.log("Hey there")}>
         <View style={styles.rollDisplayContainer}>
           <Text style={styles.rollDisplayText} aria-label="Roll formula">
-            {"3d6 + 4 + 6d12"}
+            {rollDisplay}
           </Text>
         </View>
         <Result result={result} />
