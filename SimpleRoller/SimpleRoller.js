@@ -102,13 +102,13 @@ export default function SimpleRoller() {
       setSelectedDie(getAdjacentDie().right);
     });
 
-  const handlePress = () => {
-    setResult(rollParser(rollFormula));
+  const handleRoll = () => {
+    setResult(rollParser(rollString));
   };
   const handleDiePress = (type) => {
     setSelectedDie(type);
   };
-
+  console.log(result);
   const gesture = Gesture.Exclusive(
     increment5,
     decrement5,
@@ -119,19 +119,19 @@ export default function SimpleRoller() {
   );
 
   // Create string to display in text field
-  const rollDisplay = (() => {
-    let displayStr = "";
+  const rollString = (() => {
+    let rollStr = "";
 
     rollQuery.forEach((die, idx) => {
       if (die.count) {
         // Add +/- sign to start
-        if (displayStr !== "" || die.count < 0) {
-          displayStr += die.count < 0 ? " - " : " + ";
+        if (rollStr !== "" || die.count < 0) {
+          rollStr += die.count < 0 ? " - " : " + ";
         }
-        displayStr += Math.abs(die.count) + (die.type === "flat" ? "" : die.type);
+        rollStr += Math.abs(die.count) + (die.type === "flat" ? "" : die.type);
       }
     });
-    return displayStr;
+    return rollStr;
   })();
 
   return (
@@ -139,11 +139,11 @@ export default function SimpleRoller() {
       <View style={styles.container} onResponderStart={() => console.log("Hey there")}>
         <View style={styles.rollDisplayContainer}>
           <Text style={styles.rollDisplayText} aria-label="Roll formula">
-            {rollDisplay}
+            {rollString}
           </Text>
         </View>
         <Result result={result} />
-        <RollButton handlePress={handlePress} />
+        <RollButton handlePress={handleRoll} />
         <View>
           <Text style={{ fontSize: 18, marginVertical: 4, textAlign: "center" }}>
             {profile.name}
