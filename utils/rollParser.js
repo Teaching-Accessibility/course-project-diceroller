@@ -8,10 +8,68 @@ export default rollParser = (rollQuery) => {
   // If operator, do some math
 
     const diceRoller = new DiceRoller();
-    const roll = diceRoller.roll(rollQuery);
-    console.log(roll)
-    return roll;
+    if(rollQuery){
+      const roll = diceRoller.roll(rollQuery);
+      console.log(roll)
+      return roll;
+    }
+    
 };
+
+//temporary implementation. Should soon replace rollParser() as the default return format.
+//Returns a formatted subsection of the diceRoller object.
+export const rollParserFmt = (rollQuery) => {
+  const diceRoller = new DiceRoller();
+
+  if(rollQuery){
+    const diceRolls = diceRoller.roll(rollQuery);
+    const sum = diceRoller.rollValue(rollQuery)
+
+    //split query into substrings to include in dice groups
+    const queryArray = rollQuery.split("+");
+
+    //consruct an array of each group of dice results (3d6, 2d10, etc.)
+    result = []
+    for (i in diceRolls.dice){
+
+      //construct an array of each die roll in that group
+      var group = diceRolls.dice[i]
+      diceResults = []
+      for (j in group.rolls){
+        var die = group.rolls[j]
+        diceResults.push(
+          {dieResult: die.roll,
+            critical: die.critical,
+            type: die.die
+          }
+        )
+      }
+
+      result.push(
+        {sum: group.value,
+          query: queryArray[i],
+          rolls: diceResults
+        }
+      );
+    }
+  
+  }
+
+  return {total: sum,
+          query: rollQuery,
+          result: result};
+}
+
+//Simple interface function for diceRoller.rollValue()
+//Returns the total rolled value for a query.
+export const rollParserValue = (rollQuery) => {
+  const diceRoller = new DiceRoller();
+  if(rollQuery){
+    const total = diceRoller.rollValue(rollQuery)
+    return total
+  }
+  
+}
 
 // Param: Roll a die or set of a single kind of dice. Always returns an array for rolls
 // Example: 1d6, 2d8, 1dF, 1d9
