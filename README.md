@@ -10,6 +10,9 @@
   - Created advanced roller page UI, implemented some features
   - Created profile context hook for use throughout project, since a lot of the components are dependent on the profile's configurations
 - Ian Donovan
+  - included the dice-roller-parser library by btmorton
+  - implemented rollPraser to work with complex strings, only works for simple roller for now
+  - simple roller displays groups results seperated by die type
 
 ## Features
 

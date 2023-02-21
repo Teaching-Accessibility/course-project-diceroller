@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from "react-native";
 import { Directions, Gesture, GestureDetector } from "react-native-gesture-handler";
 import { useProfile } from "../Profiles/ProfileContext";
-import { rollDice } from "../utils/rollParser";
+import rollParser, { rollDice } from "../utils/rollParser";
 import Die from "./Die";
 import Result from "./Result";
 import RollButton from "./RollButton";
@@ -71,7 +71,9 @@ export default function SimpleRoller() {
     });
 
   const handlePress = () => {
-    setResult(rollDice(rollFormula));
+
+    setResult(rollParser(rollFormula));
+
   };
   const handleDiePress = (type) => {
     setSelectedDie(type);
