@@ -2,7 +2,7 @@ import React, { useReducer, useState } from "react";
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from "react-native";
 import { Directions, Gesture, GestureDetector } from "react-native-gesture-handler";
 import { useProfiles } from "../Profiles/ProfileContext";
-import rollParser, { rollDice } from "../utils/rollParser";
+import rollParser, { rollDice, rollParserFmt } from "../utils/rollParser";
 import Die from "./Die";
 import Result from "./Result";
 import RollButton from "./RollButton";
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
 });
 
 export default function SimpleRoller() {
-  const { profile } = useProfiles();
+  const { profile, profilesDispatch } = useProfiles();
   const [selectedDie, setSelectedDie] = useState(null);
   const initialQuery = profile.dice.map((die) => ({ type: die, count: 0 }));
   const [rollQuery, setRollQuery] = useState(() => initialQuery);
@@ -104,13 +104,21 @@ export default function SimpleRoller() {
     });
 
   const handleRoll = () => {
-    setResult(rollParser(rollString));
+    const resultRoll = rollParserFmt(rollString);
+    if (resultRoll !== null) {
+      profilesDispatch({
+        type: "HISTORY_PUSH",
+        payload: { roll: resultRoll, profileId: profile.id },
+      });
+      setResult(resultRoll);
+    }
   };
   const handleDiePress = (type) => {
     setSelectedDie(type);
   };
+  // console.log(profile.history);
 
-  const gesture = Gesture.Exclusive(
+  const gesture = Gesture.Race(
     increment5,
     decrement5,
     increment1,

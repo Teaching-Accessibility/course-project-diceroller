@@ -7,13 +7,11 @@ export default rollParser = (rollQuery) => {
   // If operand.match(/^d$/), just convert to int
   // If operator, do some math
 
-    const diceRoller = new DiceRoller();
-    if(rollQuery){
-      const roll = diceRoller.roll(rollQuery);
-      console.log(roll)
-      return roll;
-    }
-    
+  const diceRoller = new DiceRoller();
+  if (rollQuery) {
+    const roll = diceRoller.roll(rollQuery);
+    return roll;
+  }
 };
 
 //temporary implementation. Should soon replace rollParser() as the default return format.
@@ -21,55 +19,47 @@ export default rollParser = (rollQuery) => {
 export const rollParserFmt = (rollQuery) => {
   const diceRoller = new DiceRoller();
 
-  if(rollQuery){
-    const diceRolls = diceRoller.roll(rollQuery);
-    const sum = diceRoller.rollValue(rollQuery)
-
-    //split query into substrings to include in dice groups
-    const queryArray = rollQuery.split("+");
-
-    //consruct an array of each group of dice results (3d6, 2d10, etc.)
-    result = []
-    for (i in diceRolls.dice){
-
-      //construct an array of each die roll in that group
-      var group = diceRolls.dice[i]
-      diceResults = []
-      for (j in group.rolls){
-        var die = group.rolls[j]
-        diceResults.push(
-          {dieResult: die.roll,
-            critical: die.critical,
-            type: die.die
-          }
-        )
-      }
-
-      result.push(
-        {sum: group.value,
-          query: queryArray[i],
-          rolls: diceResults
-        }
-      );
+  if (rollQuery) {
+    const result = diceRoller.roll(rollQuery);
+    // Group by dice groups, i.e. 2d6, 1d20, 5
+    if (result.type === "die") {
+      return { sum: result.value, diceGroups: [getRollGroup(result)] };
+    } else if (result.type === "expressionroll") {
+      const diceGroups = result.dice.map((rollGroup) => getRollGroup(rollGroup));
+      const sum = result.value;
+      return { sum, diceGroups, ops: result.ops };
+    } else {
+      throw `Unhandled result type: ${result.type}`;
     }
-  
   }
+  return null;
+};
 
-  return {total: sum,
-          query: rollQuery,
-          result: result};
-}
+const getRollGroup = (rollGroup) => {
+  const sum = rollGroup.value;
+  const type = rollGroup.type;
+  if (rollGroup.type === "die") {
+    const query = rollGroup.count.value + "d" + rollGroup.die.value;
+    const rolls = getRolls(rollGroup.rolls);
+    return { query, sum, rolls, type };
+  } else if (rollGroup.type === "number") {
+    return { sum, type };
+  } else {
+    throw `Unrecognized roll group type: ${rollGroup.type}`;
+  }
+};
+
+const getRolls = (rolls) => rolls.map((roll) => ({ value: roll.roll, critical: roll.critical }));
 
 //Simple interface function for diceRoller.rollValue()
 //Returns the total rolled value for a query.
 export const rollParserValue = (rollQuery) => {
   const diceRoller = new DiceRoller();
-  if(rollQuery){
-    const total = diceRoller.rollValue(rollQuery)
-    return total
+  if (rollQuery) {
+    const total = diceRoller.rollValue(rollQuery);
+    return total;
   }
-  
-}
+};
 
 // Param: Roll a die or set of a single kind of dice. Always returns an array for rolls
 // Example: 1d6, 2d8, 1dF, 1d9

@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createContext, useContext, useEffect, useReducer, useState } from "react";
+import "react-native-get-random-values";
 import { v4 as uuid } from "uuid";
 
 const ProfileContext = createContext();
@@ -28,28 +29,32 @@ const reducer = (state, action) => {
       return action.payload;
     case "ADD_PROFILE":
       profiles = [...state, action.payload];
+      return profiles;
     case "UPDATE_PROFILE":
       // {profile}
       profiles = state.map((profile) =>
         profile.id === action.payload.id ? action.payload : profile
       );
       storeData("profiles", profiles);
+      return profiles;
     case "REMOVE_PROFILE":
       profiles = state.filter((profile) => profile.id !== action.payload.id);
       storeData("profiles", profiles);
+      return profiles;
     case "HISTORY_PUSH":
       // {roll, profileId}
       profiles = state.map((profile) => {
         if (profile.id === action.payload.profileId) {
           return {
             ...profile,
-            history: [...state.history, { ...action.payload.roll, id: uuid() }],
+            history: [...profile.history, { ...action.payload.roll, id: uuid() }],
           };
         } else {
           return profile;
         }
       });
       storeData("profiles", profiles);
+      return profiles;
     case "HISTORY_REMOVE":
       // {historyId, profileId}
       profiles = state.map((profile) => {
@@ -60,19 +65,21 @@ const reducer = (state, action) => {
         }
       });
       storeData("profiles", profiles);
+      return profiles;
     case "ROLL_PUSH":
       // {profileId, roll}
       profiles = state.map((profile) => {
         if (profile.id === action.payload.profileId) {
           return {
             ...profile,
-            savedRolls: [...state.savedRolls, { ...action.payload.roll, id: uuid() }],
+            savedRolls: [...profile.savedRolls, { ...action.payload.roll, id: uuid() }],
           };
         } else {
           return profile;
         }
       });
       storeData("profiles", profiles);
+      return profiles;
     case "ROLL_REMOVE":
       // {rollId, profileId}
       profiles = state.map((profile) => {
@@ -86,6 +93,7 @@ const reducer = (state, action) => {
         }
       });
       storeData("profiles", profiles);
+      return profiles;
 
     default:
       throw `Unknown profiles action type: ${action.type}`;

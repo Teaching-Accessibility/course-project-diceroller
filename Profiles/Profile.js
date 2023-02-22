@@ -1,5 +1,6 @@
 import React, { useReducer } from "react";
 import { View } from "react-native";
+import "react-native-get-random-values";
 import { v4 as uuid } from "uuid";
 
 // Create copy of profile to safely edit

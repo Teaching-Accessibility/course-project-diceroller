@@ -43,18 +43,16 @@ export default function Result({ result }) {
             {result.sum}
           </Text>
           {/* Eventually, every dice group gets its own roll container */}
-          {result.dice.map((group, idx) => (
-            <View key={"group" + idx} style={styles.rollsContainer}>
+          {result.diceGroups.map((rollGroup, groupIdx) => (
+            <View key={"rollGroup" + groupIdx} style={styles.rollsContainer}>
               <View style={styles.rollGroup}>
-                {group.rolls.map((rolls, idx) => (
-                  <Text key={"roll" + group.order + rolls.order} style={{ fontSize: 22 }}>
-                    {rolls.roll}
+                {rollGroup.rolls.map((roll, rollIdx) => (
+                  <Text key={"roll" + groupIdx + rollIdx} style={{ fontSize: 22 }}>
+                    {roll.value}
                   </Text>
                 ))}
               </View>
-              <Text style={{ textAlign: "center", fontSize: 18 }}>
-                {group.rolls.length + "d" + group.die.value}
-              </Text>
+              <Text style={{ textAlign: "center", fontSize: 18 }}>{rollGroup.query}</Text>
             </View>
           ))}
         </View>
