@@ -4,13 +4,14 @@ import { Directions, Gesture, GestureDetector } from "react-native-gesture-handl
 import { useProfiles } from "../Profiles/ProfileContext";
 import rollParser, { rollDice, rollParserFmt } from "../utils/rollParser";
 import Die from "./Die";
-import Result from "./Result";
+import Results from "./Results";
 import RollButton from "./RollButton";
 
 const styles = StyleSheet.create({
   container: {
     padding: 8,
-    height: "100%",
+    flex: 1,
+    maxHeight: "100%",
   },
   rollDisplayContainer: {
     borderWidth: 2,
@@ -37,10 +38,10 @@ const styles = StyleSheet.create({
 
 export default function SimpleRoller() {
   const { profile, profilesDispatch } = useProfiles();
-  const [selectedDie, setSelectedDie] = useState(null);
+  const [selectedDie, setSelectedDie] = useState(profile.dice[0]);
   const initialQuery = profile.dice.map((die) => ({ type: die, count: 0 }));
   const [rollQuery, setRollQuery] = useState(() => initialQuery);
-  const [result, setResult] = useState();
+  const [results, setResults] = useState();
 
   // Die is an element from dice, amount is a positive or negative #
   const updateRollQuery = (die, amount) => {
@@ -104,13 +105,14 @@ export default function SimpleRoller() {
     });
 
   const handleRoll = () => {
-    const resultRoll = rollParserFmt(rollString);
-    if (resultRoll !== null) {
+    const resultsRoll = rollParserFmt(rollString);
+    console.log(resultsRoll);
+    if (resultsRoll !== null) {
       profilesDispatch({
         type: "HISTORY_PUSH",
-        payload: { roll: resultRoll, profileId: profile.id },
+        payload: { roll: resultsRoll, profileId: profile.id },
       });
-      setResult(resultRoll);
+      setResults(resultsRoll);
     }
   };
   const handleDiePress = (type) => {
@@ -145,13 +147,13 @@ export default function SimpleRoller() {
 
   return (
     <GestureDetector gesture={gesture}>
-      <View style={styles.container} onResponderStart={() => console.log("Hey there")}>
+      <View style={styles.container}>
         <View style={styles.rollDisplayContainer}>
           <Text style={styles.rollDisplayText} aria-label="Roll formula">
             {rollString}
           </Text>
         </View>
-        <Result result={result} />
+        <Results results={results} />
         <RollButton handlePress={handleRoll} />
         <View>
           <Text style={{ fontSize: 18, marginVertical: 4, textAlign: "center" }}>

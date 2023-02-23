@@ -1,60 +1,53 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { rollDice } from "../utils/rollParser";
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop: "auto",
-    marginBottom: "auto",
-    padding: 12,
-    // elevation: 6,
-    borderWidth: 2,
-    borderRadius: 10,
-    width: "100%",
-    minHeight: 200,
-  },
   rollsContainer: {
-    // Width should be determined by the amount of items inside
-    maxWidth: 200,
-    width: "100%",
+    // minWidth: "25%",
+    flexGrow: 1,
+    marginHorizontal: 6,
   },
-  rollGroup: {
+  rollGroupDie: {
+    width: "auto",
     flexDirection: "row",
     padding: 6,
     marginBottom: 6,
-    justifyContent: "space-between",
+    justifyContent: "space-evenly",
     borderBottomWidth: 2,
-    width: "100%",
-    alignSelf: "center",
+    alignItems: "center",
+    // alignSelf: "center",
+  },
+  rollGroupNumber: {
+    width: "auto",
+    flexDirection: "row",
+    padding: 6,
+    marginBottom: 6,
+    justifyContent: "space-evenly",
+    // borderBottomWidth: 2,
+    alignItems: "center",
   },
 });
 
-//input: RollBase output from DiceRoller
-export default function Result({ result }) {
-  // TODO: Add clear function
+export default function Result({ rollGroup, groupIdx }) {
   return (
-    <View style={styles.container} aria-label="Result">
-      <Text role="heading" style={{ fontSize: 24, textAlign: "center" }}>
-        Result
-      </Text>
-      {result && (
-        <View style={{ alignItems: "center" }}>
-          <Text style={{ fontSize: 40, fontWeight: "bold", textAlign: "center" }}>
-            {result.sum}
+    <View style={styles.rollsContainer}>
+      {rollGroup.type === "die" ? (
+        <>
+          <View style={styles.rollGroupDie}>
+            {rollGroup.rolls.map((roll, rollIdx) => (
+              <Text key={"roll" + groupIdx + rollIdx} style={{ fontSize: 22, marginHorizontal: 4 }}>
+                {roll.value}
+                {rollIdx !== rollGroup.rolls.length - 1 && ", "}
+              </Text>
+            ))}
+          </View>
+          <Text style={{ textAlign: "center", fontSize: 20, width: "100%" }}>
+            {rollGroup.query}
           </Text>
-          {/* Eventually, every dice group gets its own roll container */}
-          {result.diceGroups.map((rollGroup, groupIdx) => (
-            <View key={"rollGroup" + groupIdx} style={styles.rollsContainer}>
-              <View style={styles.rollGroup}>
-                {rollGroup.rolls.map((roll, rollIdx) => (
-                  <Text key={"roll" + groupIdx + rollIdx} style={{ fontSize: 22 }}>
-                    {roll.value}
-                  </Text>
-                ))}
-              </View>
-              <Text style={{ textAlign: "center", fontSize: 18 }}>{rollGroup.query}</Text>
-            </View>
-          ))}
+        </>
+      ) : (
+        <View style={styles.rollGroupNumber}>
+          <Text style={{ fontSize: 28 }}>{rollGroup.sum}</Text>
         </View>
       )}
     </View>
