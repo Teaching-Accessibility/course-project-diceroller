@@ -18,7 +18,8 @@ const styles = StyleSheet.create({
 export default function Results({ results }) {
   // TODO: Add clear function
   return (
-    <ScrollView style={styles.container} aria-label="Result">
+    // <ScrollView style={styles.container} aria-label="Result">
+    <View style={styles.container} aria-label="Result">
       <Text role="heading" style={{ fontSize: 24, textAlign: "center" }}>
         Result
       </Text>
@@ -45,6 +46,7 @@ export default function Results({ results }) {
           </View>
         </View>
       )}
-    </ScrollView>
+      {/* </ScrollView> */}
+    </View>
   );
 }

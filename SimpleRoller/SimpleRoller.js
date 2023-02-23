@@ -106,7 +106,6 @@ export default function SimpleRoller() {
 
   const handleRoll = () => {
     const resultsRoll = rollParserFmt(rollString);
-    console.log(resultsRoll);
     if (resultsRoll !== null) {
       profilesDispatch({
         type: "HISTORY_PUSH",
@@ -118,7 +117,7 @@ export default function SimpleRoller() {
   const handleDiePress = (type) => {
     setSelectedDie(type);
   };
-  // console.log(profile.history);
+  console.log(profile.history);
 
   const gesture = Gesture.Race(
     increment5,

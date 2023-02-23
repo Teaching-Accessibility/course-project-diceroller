@@ -1,5 +1,5 @@
 import React, { useReducer } from "react";
-import { View } from "react-native";
+import { Text, View } from "react-native";
 import "react-native-get-random-values";
 import { v4 as uuid } from "uuid";
 
@@ -31,8 +31,19 @@ const reducer = (state, action) => {
   }
 };
 
-export default function Profile({ oldProfile }) {
-  const [profile, profileDispatch] = useReducer(reducer, oldProfile);
+export default function Profile({ profileToEdit }) {
+  const [profile, profileDispatch] = useReducer(reducer, profileToEdit);
 
-  return <View></View>;
+  return (
+    <View>
+      <View>
+        <Text>{profile.name}</Text>
+      </View>
+      <View>
+        <Text>Preset System Profiles</Text>
+        <Text>{profile.system}</Text>
+        {/* Make into a dropdown of presets */}
+      </View>
+    </View>
+  );
 }

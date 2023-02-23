@@ -23,11 +23,11 @@ export const rollParserFmt = (rollQuery) => {
     const result = diceRoller.roll(rollQuery);
     // Group by dice groups, i.e. 2d6, 1d20, 5
     if (result.type === "die") {
-      return { sum: result.value, diceGroups: [getRollGroup(result)] };
+      return { sum: result.value, diceGroups: [getRollGroup(result)], rollQuery };
     } else if (result.type === "expressionroll") {
       const diceGroups = result.dice.map((rollGroup) => getRollGroup(rollGroup));
       const sum = result.value;
-      return { sum, diceGroups, ops: result.ops };
+      return { sum, diceGroups, ops: result.ops, rollQuery };
     } else {
       throw `Unhandled result type: ${result.type}`;
     }
