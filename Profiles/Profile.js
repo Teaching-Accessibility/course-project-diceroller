@@ -2,6 +2,7 @@ import React, { useReducer } from "react";
 import { Text, View } from "react-native";
 import "react-native-get-random-values";
 import { v4 as uuid } from "uuid";
+import SavedRoll from "../AdvancedRoller/SavedRoll";
 
 // Create copy of profile to safely edit
 const reducer = (state, action) => {
@@ -43,6 +44,12 @@ export default function Profile({ profileToEdit }) {
         <Text>Preset System Profiles</Text>
         <Text>{profile.system}</Text>
         {/* Make into a dropdown of presets */}
+      </View>
+      <View>
+        <Text>Saved Rolls</Text>
+        {profile.savedRolls.map((savedRoll) => (
+          <SavedRoll key={savedRoll.id} {...savedRoll} />
+        ))}
       </View>
     </View>
   );

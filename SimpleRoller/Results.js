@@ -1,3 +1,4 @@
+import { Button } from "@react-native-material/core";
 import React, { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { rollDice } from "../utils/rollParser";
@@ -11,6 +12,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: "100%",
     flex: 1,
+    justifyContent: "space-between",
   },
 });
 
@@ -18,7 +20,6 @@ const styles = StyleSheet.create({
 export default function Results({ results }) {
   // TODO: Add clear function
   return (
-    // <ScrollView style={styles.container} aria-label="Result">
     <View style={styles.container} aria-label="Result">
       <Text role="heading" style={{ fontSize: 24, textAlign: "center" }}>
         Result
@@ -46,7 +47,7 @@ export default function Results({ results }) {
           </View>
         </View>
       )}
-      {/* </ScrollView> */}
+      <Button title="History" variant="contained" />
     </View>
   );
 }

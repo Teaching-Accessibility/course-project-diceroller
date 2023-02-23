@@ -1,37 +1,24 @@
+import { ListItem } from "@react-native-material/core";
 import React from "react";
 import { ScrollView, Text, View } from "react-native";
 import { useProfiles } from "../Profiles/ProfileContext";
 
+const HistoryItem = ({ historyItem }) => {
+  return (
+    <ListItem
+      title={<Text style={{ fontSize: 24 }}>{historyItem.sum}</Text>}
+      secondaryText={<Text style={{ fontSize: 20 }}>{historyItem.rollQuery}</Text>}
+    />
+  );
+};
+
 export default function History() {
   const { profile } = useProfiles();
-  console.log(profile.history);
+  // Add dropdown to view individual results
   return (
-    <ScrollView style={{ padding: 12 }}>
+    <ScrollView>
       {profile.history.map((historyItem) => (
-        <View
-          key={historyItem.id}
-          style={{
-            height: 80,
-            padding: 8,
-            flexDirection: "row",
-            flexWrap: "wrap",
-            alignItems: "center",
-          }}>
-          <Text style={{ fontSize: 24, flex: 0.8, textAlign: "left" }}>
-            {historyItem.rollQuery}
-          </Text>
-          <View
-            style={{
-              height: "80%",
-              borderLeftWidth: 2,
-              marginHorizontal: 4,
-              borderLeftColor: "grey",
-            }}
-          />
-          <Text style={{ fontSize: 36, flex: 0.1, flexGrow: 0.2, textAlign: "center" }}>
-            {historyItem.sum}
-          </Text>
-        </View>
+        <HistoryItem key={historyItem.id} historyItem={historyItem} />
       ))}
     </ScrollView>
   );

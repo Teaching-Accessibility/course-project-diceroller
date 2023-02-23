@@ -1,3 +1,4 @@
+import { Button } from "@react-native-material/core";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 const styles = StyleSheet.create({
@@ -19,6 +20,16 @@ const styles = StyleSheet.create({
 });
 
 export default function RollButton({ handlePress }) {
+  return (
+    <Button
+      title="Roll"
+      titleStyle={{ fontSize: 30, verticalAlign: "middle", height: "100%" }}
+      contentContainerStyle={{ height: "100%" }}
+      variant="contained"
+      onPress={handlePress}
+      style={{ height: 180 }}
+    />
+  );
   return (
     <View
       accessibilityHint="Execute current dice formula"

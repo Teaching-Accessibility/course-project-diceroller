@@ -1,3 +1,4 @@
+import { Button } from "@react-native-material/core";
 import React, { useReducer, useState } from "react";
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from "react-native";
 import { Directions, Gesture, GestureDetector } from "react-native-gesture-handler";
@@ -13,13 +14,23 @@ const styles = StyleSheet.create({
     flex: 1,
     maxHeight: "100%",
   },
+  topRow: {
+    flexDirection: "row",
+    flex: 1,
+    maxHeight: 50,
+    // alignItems: "center",
+    // rowGap: 8,
+  },
+  clearButton: {
+    marginLeft: 8,
+    // flex: 0.2,
+  },
   rollDisplayContainer: {
     borderWidth: 2,
     borderRadius: 5,
     padding: 8,
-    height: 80,
-    marginTop: 12,
     justifyContent: "center",
+    flex: 1,
     // alignSelf: 'center',
   },
   rollDisplayText: {
@@ -117,7 +128,10 @@ export default function SimpleRoller() {
   const handleDiePress = (type) => {
     setSelectedDie(type);
   };
-  console.log(profile.history);
+  const handleClear = () => {
+    setRollQuery(initialQuery);
+    setResults(null);
+  };
 
   const gesture = Gesture.Race(
     increment5,
@@ -147,10 +161,18 @@ export default function SimpleRoller() {
   return (
     <GestureDetector gesture={gesture}>
       <View style={styles.container}>
-        <View style={styles.rollDisplayContainer}>
-          <Text style={styles.rollDisplayText} aria-label="Roll formula">
-            {rollString}
-          </Text>
+        <View style={styles.topRow}>
+          <View style={styles.rollDisplayContainer}>
+            <Text style={styles.rollDisplayText} aria-label="Roll formula">
+              {rollString}
+            </Text>
+          </View>
+          <Button
+            style={styles.clearButton}
+            onPress={handleClear}
+            title="Clear"
+            titleStyle={{ textAlignVertical: "center", height: "100%" }}
+          />
         </View>
         <Results results={results} />
         <RollButton handlePress={handleRoll} />
