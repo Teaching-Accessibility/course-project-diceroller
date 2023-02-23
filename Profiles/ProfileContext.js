@@ -105,7 +105,7 @@ const defaultProfile = {
   id: "13",
   name: "Test Profile",
   system: "D&D 5e",
-  dice: ["d20", "d12", "d10", "d8", "d6", "d4", "flat"],
+  dice: ["d20", "d12", "d10", "d8", "d6", "d4", "d100", "flat"],
   // Create dictionary with functions correlating to the names
   preRollModifiers: ["Advantage", "Disadvantage", "Exploding"],
   postRollModifiers: [],
@@ -121,7 +121,7 @@ export const ProfileContextProvider = ({ children }) => {
   useEffect(() => {
     const initProfiles = async () => {
       // Uncomment, reload, then re-comment below line to update saved defaultProfile
-      // await storeData("profiles", [defaultProfile]);
+      await storeData("profiles", [defaultProfile]);
       let profiles = await getData("profiles");
       // If nothing stored, store it
       if (profiles === null) {

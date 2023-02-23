@@ -115,6 +115,7 @@ export default function SimpleRoller() {
     }
   };
   const handleDiePress = (type) => {
+    updateRollQuery(type, 1)
     setSelectedDie(type);
   };
   console.log(profile.history);
