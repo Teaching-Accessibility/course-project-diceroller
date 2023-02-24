@@ -1,17 +1,17 @@
-import { Button } from "@react-native-material/core";
 import React, { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
+import { Button, Surface, Text } from "react-native-paper";
 import { rollDice } from "../utils/rollParser";
 import Result from "./Result";
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 8,
+    marginBottom: 8,
     padding: 12,
     borderWidth: 2,
     borderRadius: 10,
-    width: "100%",
     flex: 1,
+    flexGrow: 2,
     justifyContent: "space-between",
   },
 });
@@ -20,13 +20,13 @@ const styles = StyleSheet.create({
 export default function Results({ results }) {
   // TODO: Add clear function
   return (
-    <View style={styles.container} aria-label="Result">
-      <Text role="heading" style={{ fontSize: 24, textAlign: "center" }}>
+    <View style={styles.container}>
+      <Text variant="headlineMedium" role="heading" style={{ textAlign: "center" }}>
         Result
       </Text>
       {results && (
-        <View style={{ alignItems: "center", flex: 1 }}>
-          <Text style={{ fontSize: 40, fontWeight: "bold", textAlign: "center" }}>
+        <View style={{ alignItems: "center" }}>
+          <Text variant="displayMedium" style={{ textAlign: "center", fontWeight: "bold" }}>
             {results.sum}
           </Text>
           <View
@@ -40,14 +40,14 @@ export default function Results({ results }) {
               <React.Fragment key={"rollGroup" + groupIdx}>
                 <Result rollGroup={rollGroup} groupIdx={groupIdx} />
                 {results.ops && groupIdx < results.diceGroups.length - 1 && (
-                  <Text style={{ fontSize: 24 }}>{results.ops[groupIdx]}</Text>
+                  <Text variant="headlineMedium">{results.ops[groupIdx]}</Text>
                 )}
               </React.Fragment>
             ))}
           </View>
         </View>
       )}
-      <Button title="History" variant="contained" />
+      <Button mode="contained">History</Button>
     </View>
   );
 }

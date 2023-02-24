@@ -1,7 +1,6 @@
 import React from "react";
 import { TouchableOpacity, View, Text } from "react-native";
 import theme from "../theme";
-import CheckBox from "@react-native-community/checkbox";
 import { useProfiles } from "./ProfileContext";
 
 export default function ProfileCard({ id, name, system, handlePress }) {

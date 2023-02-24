@@ -1,34 +1,32 @@
-import { Button } from "@react-native-material/core";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Button } from "react-native-paper";
 
 const styles = StyleSheet.create({
   rollButtonContainer: {
-    elevation: 8,
     borderRadius: 10,
     padding: 8,
-    backgroundColor: "#0078B4",
-    height: 180,
+    marginVertical: 12,
+    flex: 1,
     justifyContent: "center",
   },
-  rollButtonText: {
+  button: {
     fontSize: 30,
     color: "#fff",
-    fontWeight: "bold",
-    alignSelf: "center",
-    textTransform: "uppercase",
+    // height: "100%",
   },
 });
 
 export default function RollButton({ handlePress }) {
   return (
-    <Button
-      title="Roll"
-      titleStyle={{ fontSize: 30, verticalAlign: "middle", height: "100%" }}
-      contentContainerStyle={{ height: "100%" }}
-      variant="contained"
-      onPress={handlePress}
-      style={{ height: 180 }}
-    />
+    <View style={styles.rollButtonContainer}>
+      <Button
+        mode="contained"
+        uppercase
+        onPress={handlePress}
+        labelStyle={{ fontSize: 24, paddingTop: 12, paddingBottom: 4 }}>
+        Roll
+      </Button>
+    </View>
   );
   return (
     <View

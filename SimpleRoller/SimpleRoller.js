@@ -1,7 +1,7 @@
-import { Button } from "@react-native-material/core";
 import React, { useReducer, useState } from "react";
-import { View, Text, TextInput, StyleSheet, TouchableOpacity } from "react-native";
+import { View, TextInput, StyleSheet, TouchableOpacity } from "react-native";
 import { Directions, Gesture, GestureDetector } from "react-native-gesture-handler";
+import { Button, Text } from "react-native-paper";
 import { useProfiles } from "../Profiles/ProfileContext";
 import rollParser, { rollDice, rollParserFmt } from "../utils/rollParser";
 import Die from "./Die";
@@ -12,14 +12,6 @@ const styles = StyleSheet.create({
   container: {
     padding: 8,
     flex: 1,
-    maxHeight: "100%",
-  },
-  topRow: {
-    flexDirection: "row",
-    flex: 1,
-    maxHeight: 50,
-    // alignItems: "center",
-    // rowGap: 8,
   },
   clearButton: {
     marginLeft: 8,
@@ -27,10 +19,12 @@ const styles = StyleSheet.create({
   },
   rollDisplayContainer: {
     borderWidth: 2,
-    borderRadius: 5,
+    borderRadius: 10,
     padding: 8,
     justifyContent: "center",
-    flex: 1,
+    width: "100%",
+    marginTop: 16,
+    marginBottom: 12,
     // alignSelf: 'center',
   },
   rollDisplayText: {
@@ -126,7 +120,7 @@ export default function SimpleRoller() {
     }
   };
   const handleDiePress = (type) => {
-    updateRollQuery(type, 1)
+    updateRollQuery(type, 1);
     setSelectedDie(type);
   };
   const handleClear = () => {
@@ -164,21 +158,29 @@ export default function SimpleRoller() {
       <View style={styles.container}>
         <View style={styles.topRow}>
           <View style={styles.rollDisplayContainer}>
-            <Text style={styles.rollDisplayText} aria-label="Roll formula">
-              {rollString}
+            <Text variant="titleLarge" aria-label="Roll formula">
+              {rollString ? (
+                rollString
+              ) : (
+                <Text variant="titleLarge" style={{ fontStyle: "italic" }}>
+                  Enter a formula
+                </Text>
+              )}
             </Text>
           </View>
-          <Button
-            style={styles.clearButton}
-            onPress={handleClear}
-            title="Clear"
-            titleStyle={{ textAlignVertical: "center", height: "100%" }}
-          />
+          <View style={{ marginBottom: 16, flexDirection: "row", justifyContent: "space-between" }}>
+            <Button mode="outlined" uppercase>
+              Save Roll
+            </Button>
+            <Button style={styles.clearButton} mode="outlined" uppercase onPress={handleClear}>
+              Clear
+            </Button>
+          </View>
         </View>
         <Results results={results} />
         <RollButton handlePress={handleRoll} />
         <View>
-          <Text style={{ fontSize: 18, marginVertical: 4, textAlign: "center" }}>
+          <Text variant="labelMedium" style={{ marginVertical: 4, textAlign: "center" }}>
             {profile.name}
           </Text>
           <View style={styles.diceContainer}>

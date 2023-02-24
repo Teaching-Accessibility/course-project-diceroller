@@ -1,10 +1,9 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
+import { Text } from "react-native-paper";
 
 const styles = StyleSheet.create({
   rollsContainer: {
-    // minWidth: "25%",
-    flexGrow: 1,
     marginHorizontal: 6,
   },
   rollGroupDie: {
@@ -12,7 +11,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     padding: 6,
     marginBottom: 6,
-    justifyContent: "space-evenly",
+    justifyContent: "center",
     borderBottomWidth: 2,
     alignItems: "center",
     // alignSelf: "center",
@@ -21,7 +20,6 @@ const styles = StyleSheet.create({
     width: "auto",
     flexDirection: "row",
     padding: 6,
-    marginBottom: 6,
     justifyContent: "space-evenly",
     // borderBottomWidth: 2,
     alignItems: "center",
@@ -30,24 +28,27 @@ const styles = StyleSheet.create({
 
 export default function Result({ rollGroup, groupIdx }) {
   return (
-    <View style={styles.rollsContainer}>
+    <View style={[styles.rollsContainer, { flexGrow: rollGroup.type === "die" ? 5 : 1 }]}>
       {rollGroup.type === "die" ? (
         <>
           <View style={styles.rollGroupDie}>
             {rollGroup.rolls.map((roll, rollIdx) => (
-              <Text key={"roll" + groupIdx + rollIdx} style={{ fontSize: 22, marginHorizontal: 4 }}>
+              <Text
+                variant="titleLarge"
+                key={"roll" + groupIdx + rollIdx}
+                style={{ marginHorizontal: 4 }}>
                 {roll.value}
                 {rollIdx !== rollGroup.rolls.length - 1 && ", "}
               </Text>
             ))}
           </View>
-          <Text style={{ textAlign: "center", fontSize: 20, width: "100%" }}>
+          <Text variant="titleMedium" style={{ textAlign: "center" }}>
             {rollGroup.query}
           </Text>
         </>
       ) : (
         <View style={styles.rollGroupNumber}>
-          <Text style={{ fontSize: 28 }}>{rollGroup.sum}</Text>
+          <Text variant="headlineSmall">{rollGroup.sum}</Text>
         </View>
       )}
     </View>
