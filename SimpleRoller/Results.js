@@ -7,12 +7,12 @@ import Result from "./Result";
 const styles = StyleSheet.create({
   container: {
     marginBottom: 8,
-    padding: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
     borderWidth: 2,
     borderRadius: 10,
     flex: 1,
-    flexGrow: 2,
-    justifyContent: "space-between",
+    flexGrow: 4,
   },
 });
 
@@ -21,12 +21,15 @@ export default function Results({ results }) {
   // TODO: Add clear function
   return (
     <View style={styles.container}>
-      <Text variant="headlineMedium" role="heading" style={{ textAlign: "center" }}>
+      <Text
+        variant="headlineMedium"
+        role="heading"
+        style={{ textAlign: "center", marginBottom: 12 }}>
         Result
       </Text>
       {results && (
-        <View style={{ alignItems: "center" }}>
-          <Text variant="displayMedium" style={{ textAlign: "center", fontWeight: "bold" }}>
+        <>
+          <Text variant="displaySmall" style={{ textAlign: "center", fontWeight: "bold" }}>
             {results.sum}
           </Text>
           <View
@@ -35,19 +38,19 @@ export default function Results({ results }) {
               flexDirection: "row",
               alignItems: "center",
               alignContent: "center",
+              flex: 1,
             }}>
             {results.diceGroups.map((rollGroup, groupIdx) => (
               <React.Fragment key={"rollGroup" + groupIdx}>
                 <Result rollGroup={rollGroup} groupIdx={groupIdx} />
                 {results.ops && groupIdx < results.diceGroups.length - 1 && (
-                  <Text variant="headlineMedium">{results.ops[groupIdx]}</Text>
+                  <Text variant="titleLarge">{results.ops[groupIdx]}</Text>
                 )}
               </React.Fragment>
             ))}
           </View>
-        </View>
+        </>
       )}
-      <Button mode="contained">History</Button>
     </View>
   );
 }

@@ -1,7 +1,7 @@
-import React, { useReducer, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import { View, TextInput, StyleSheet, TouchableOpacity } from "react-native";
 import { Directions, Gesture, GestureDetector } from "react-native-gesture-handler";
-import { Button, Text } from "react-native-paper";
+import { ActivityIndicator, Button, Text } from "react-native-paper";
 import { useProfiles } from "../Profiles/ProfileContext";
 import rollParser, { rollDice, rollParserFmt } from "../utils/rollParser";
 import Die from "./Die";
@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
   diceContainer: {
     flexDirection: "row",
     justifyContent: "center",
+    gap: 8,
     flexWrap: "wrap",
     width: "100%",
   },
@@ -43,10 +44,26 @@ const styles = StyleSheet.create({
 
 export default function SimpleRoller() {
   const { profile, profilesDispatch } = useProfiles();
-  const [selectedDie, setSelectedDie] = useState(profile.dice[0]);
-  const initialQuery = profile.dice.map((die) => ({ type: die, count: 0 }));
+
+  const [selectedDie, setSelectedDie] = useState(profile?.dice[0]);
+  const initialQuery = profile?.dice.map((die) => ({ type: die, count: 0 }));
   const [rollQuery, setRollQuery] = useState(() => initialQuery);
   const [results, setResults] = useState();
+
+  useEffect(() => {
+    if (!profile) {
+      setSelectedDie(profile?.dice[0]);
+      setRollQuery(initialQuery);
+    }
+  }, [profile]);
+
+  if (!profile || !rollQuery) {
+    return (
+      <View style={{ top: "45%" }}>
+        <ActivityIndicator size={70} animating={true} />
+      </View>
+    );
+  }
 
   // Die is an element from dice, amount is a positive or negative #
   const updateRollQuery = (die, amount) => {
@@ -185,7 +202,12 @@ export default function SimpleRoller() {
           </Text>
           <View style={styles.diceContainer}>
             {profile.dice.map((die) => (
-              <Die key={die} type={die} selected={selectedDie} handlePress={handleDiePress} />
+              <Die
+                key={die}
+                type={die}
+                selected={selectedDie === die}
+                handlePress={handleDiePress}
+              />
             ))}
           </View>
         </View>
