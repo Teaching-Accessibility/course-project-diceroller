@@ -51,7 +51,7 @@ export default function SimpleRoller() {
   const [results, setResults] = useState();
 
   useEffect(() => {
-    if (!profile) {
+    if (!profile || !rollQuery) {
       setSelectedDie(profile?.dice[0]);
       setRollQuery(initialQuery);
     }
