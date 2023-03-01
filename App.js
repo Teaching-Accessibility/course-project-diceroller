@@ -6,7 +6,6 @@ import FAIcons from "react-native-vector-icons/FontAwesome5";
 
 import AdvancedRoller from "./AdvancedRoller/AdvancedRoller";
 import History from "./History/History";
-import Home from "./Home";
 import { ProfileContextProvider } from "./Profiles/ProfileContext";
 import Profiles from "./Profiles/Profiles";
 import Settings from "./Settings/Settings";

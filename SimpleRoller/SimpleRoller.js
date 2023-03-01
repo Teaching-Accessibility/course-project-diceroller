@@ -7,6 +7,7 @@ import rollParser, { rollDice, rollParserFmt } from "../utils/rollParser";
 import Die from "./Die";
 import Results from "./Results";
 import RollButton from "./RollButton";
+import Loading from "../Components/Loading";
 
 const styles = StyleSheet.create({
   container: {
@@ -58,11 +59,7 @@ export default function SimpleRoller() {
   }, [profile]);
 
   if (!profile || !rollQuery) {
-    return (
-      <View style={{ top: "45%" }}>
-        <ActivityIndicator size={70} animating={true} />
-      </View>
-    );
+    return <Loading />;
   }
 
   // Die is an element from dice, amount is a positive or negative #

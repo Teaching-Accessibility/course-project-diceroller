@@ -1,8 +1,11 @@
-import React, { useReducer } from "react";
-import { Text, View } from "react-native";
+import React, { useReducer, useState } from "react";
+import { StyleSheet, View } from "react-native";
 import "react-native-get-random-values";
+import { List, Modal, Portal, RadioButton, Text, TextInput } from "react-native-paper";
 import { v4 as uuid } from "uuid";
-import SavedRoll from "../AdvancedRoller/SavedRoll";
+import presets from "./presets";
+import { useProfiles } from "./ProfileContext";
+import SavedRollEdit from "./SavedRollEdit";
 
 // Create copy of profile to safely edit
 const reducer = (state, action) => {
@@ -32,25 +35,55 @@ const reducer = (state, action) => {
   }
 };
 
-export default function Profile({ profileToEdit }) {
-  const [profile, profileDispatch] = useReducer(reducer, profileToEdit);
+const styles = StyleSheet.create({
+  listItem: {
+    backgroundColor: "white",
+    borderTopWidth: 1,
+    borderColor: "grey",
+  },
+});
+
+export default function Profile({ profile }) {
+  // const [profile, profilesDispatch] = useReducer(reducer, profileToEdit);
+  const { profilesDispatch } = useProfiles();
+  const [selectedSavedRoll, setSelectedSavedRoll] = useState(null);
+
+  const handleNameChange = (value) =>
+    profilesDispatch({ type: "RENAME_PROFILE", payload: { name: value } });
+
+  const handleDiceChange = (value) => {
+    profilesDispatch({ type: "SET_DICE", payload: { dice: value } });
+  };
 
   return (
-    <View>
+    <View style={{ padding: 16 }}>
       <View>
-        <Text>{profile.name}</Text>
+        <TextInput label="Name" value={profile.name} onChangeText={handleNameChange} />
       </View>
-      <View>
-        <Text>Preset System Profiles</Text>
-        <Text>{profile.system}</Text>
-        {/* Make into a dropdown of presets */}
+      <View style={{ marginVertical: 16, borderWidth: 1 }}>
+        <List.Accordion title="Saved Rolls">
+          <List.Item
+            title="Add new saved roll"
+            onPress={() => setSelectedSavedRoll({ new: true })}
+            style={styles.listItem}
+            left={(props) => <List.Icon {...props} icon="plus-circle-outline" />}
+          />
+          {profile.savedRolls.map((savedRoll) => (
+            <List.Item
+              key={savedRoll.id}
+              title={savedRoll.name}
+              description={savedRoll.dice}
+              onPress={() => setSelectedSavedRoll(savedRoll)}
+              style={styles.listItem}
+            />
+          ))}
+        </List.Accordion>
       </View>
-      <View>
-        <Text>Saved Rolls</Text>
-        {profile.savedRolls.map((savedRoll) => (
-          <SavedRoll key={savedRoll.id} {...savedRoll} />
-        ))}
-      </View>
+      <SavedRollEdit
+        visible={Boolean(selectedSavedRoll)}
+        savedRoll={selectedSavedRoll}
+        handleDismiss={() => setSelectedSavedRoll(null)}
+      />
     </View>
   );
 }

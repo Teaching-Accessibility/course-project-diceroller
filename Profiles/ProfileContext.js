@@ -28,7 +28,7 @@ const reducer = (state, action) => {
     case "INIT":
       return action.payload;
     case "ADD_PROFILE":
-      profiles = [...state, action.payload];
+      profiles = [...state, { ...action.payload, id: uuid() }];
       return profiles;
     case "UPDATE_PROFILE":
       // {profile}
@@ -55,18 +55,18 @@ const reducer = (state, action) => {
       });
       storeData("profiles", profiles);
       return profiles;
-    case "HISTORY_REMOVE":
-      // {historyId, profileId}
+    case "HISTORY_CLEAR":
+      // { profileId}
       profiles = state.map((profile) => {
         if (profile.id === action.payload.profileId) {
-          return { ...profile, history: profile.history.filter((roll) => roll.id !== historyId) };
+          return { ...profile, history: [] };
         } else {
           return profile;
         }
       });
       storeData("profiles", profiles);
       return profiles;
-    case "ROLL_PUSH":
+    case "ROLL_ADD":
       // {profileId, roll}
       profiles = state.map((profile) => {
         if (profile.id === action.payload.profileId) {
@@ -80,13 +80,28 @@ const reducer = (state, action) => {
       });
       storeData("profiles", profiles);
       return profiles;
+    case "ROLL_UPDATE":
+      // {rollId, profileId, roll}
+      profiles = state.map((profile) => {
+        if (profile.id === action.payload.profileId) {
+          return {
+            ...profile,
+            savedRolls: profile.savedRolls.map((roll) =>
+              roll.id === rollId ? action.payload.roll : roll
+            ),
+          };
+        } else {
+          return profile;
+        }
+      });
+      storeData("profiles", profiles);
     case "ROLL_REMOVE":
       // {rollId, profileId}
       profiles = state.map((profile) => {
         if (profile.id === action.payload.profileId) {
           return {
             ...profile,
-            savedRolls: profile.savedRolls.filter((roll) => roll.id !== rollId),
+            savedRolls: profile.savedRolls.filter((roll) => roll.id !== action.payload.rollId),
           };
         } else {
           return profile;
@@ -110,8 +125,8 @@ const defaultProfile = {
   preRollModifiers: ["Advantage", "Disadvantage", "Exploding"],
   postRollModifiers: [],
   savedRolls: [
-    { id: 1, name: "Light crossbow", dice: ["1d20 + 8", "1d6 + 4"] },
-    { id: 2, name: "Meteor Swarm", dice: ["20d6 fire", "20d6 bludgeoning"] },
+    { id: 1, name: "Light crossbow", dice: "1d20 + 8" },
+    { id: 2, name: "Meteor Swarm", dice: "20d6 + 20d6" },
     { id: 3, name: "Dexterity Save", dice: "1d20 + 4" },
   ],
   history: [],
@@ -121,7 +136,7 @@ export const ProfileContextProvider = ({ children }) => {
   useEffect(() => {
     const initProfiles = async () => {
       // Uncomment, reload, then re-comment below line to update saved defaultProfile
-      await storeData("profiles", [defaultProfile]);
+      // await storeData("profiles", [defaultProfile]);
       let profiles = await getData("profiles");
       // If nothing stored, store it
       if (profiles === null) {

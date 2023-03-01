@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { StyleSheet, Text, TextInput, View, Button, TouchableOpacity } from "react-native";
 import { useProfiles } from "../Profiles/ProfileContext";
 import RollButton from "../SimpleRoller/RollButton";
-import SavedRoll from "./SavedRoll";
 
 const styles = StyleSheet.create({
   container: {
@@ -76,9 +75,9 @@ export default function AdvancedRoller() {
         <Text role="heading" style={{ fontSize: 30, textAlign: "center" }}>
           Saved Rolls
         </Text>
-        {profile?.savedRolls?.map((savedRoll) => (
+        {/* {profile?.savedRolls?.map((savedRoll) => (
           <SavedRoll key={savedRoll.id} {...savedRoll} />
-        ))}
+        ))} */}
       </View>
       <RollButton />
     </View>
