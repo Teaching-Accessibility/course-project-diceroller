@@ -17,9 +17,18 @@ export default rollParser = (rollQuery) => {
 //temporary implementation. Should soon replace rollParser() as the default return format.
 //Returns a formatted subsection of the diceRoller object.
 export const rollParserFmt = (rollQuery) => {
+  console.log(rollQuery)
+
   const diceRoller = new DiceRoller();
 
   if (rollQuery) {
+
+    //check if the roll is only a flat modifer and convert it to a value instead of parsing it
+    if(/^\d+$/.test(rollQuery)){
+      var result_number = Number(rollQuery)
+      return {sum: result_number, diceGroups: ["flat"], rollQuery}
+    }
+
     const result = diceRoller.roll(rollQuery);
     // Group by dice groups, i.e. 2d6, 1d20, 5
     if (result.type === "die") {
@@ -53,7 +62,10 @@ const getRolls = (rolls) => rolls.map((roll) => ({ value: roll.roll, critical: r
 
 //Simple interface function for diceRoller.rollValue()
 //Returns the total rolled value for a query.
+
 export const rollParserValue = (rollQuery) => {
+  //check for numberical inputs
+
   const diceRoller = new DiceRoller();
   if (rollQuery) {
     const total = diceRoller.rollValue(rollQuery);
