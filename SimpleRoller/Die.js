@@ -18,8 +18,8 @@ const icon_table = {
   d12: "dice-d12",
   d10: "dice-d10",
   d8: "dice-d8",
-  d6: "dice-d4",
-  d4: "dice-d6"
+  d6: "dice-d6",
+  d4: "dice-d4"
 };
 
 const color_table_protonopia = {
@@ -46,7 +46,7 @@ export default function Die({type, selected, handlePress}) {
   const theme = useTheme();
   // Add accessibility action 'increment'/'decrement' for the die action
 
-  const icon = getIcon(type, "p");
+  const icon = getIcon(type);
   var icon_name = icon_table["default"];
   var icon_color = color_table_default.default;
   if(icon){

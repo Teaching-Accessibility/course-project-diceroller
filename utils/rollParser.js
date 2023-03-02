@@ -8,6 +8,7 @@ export default rollParser = (rollQuery) => {
   // If operator, do some math
 
   const diceRoller = new DiceRoller();
+
   if (rollQuery) {
     const roll = diceRoller.roll(rollQuery);
     return roll;
@@ -17,8 +18,6 @@ export default rollParser = (rollQuery) => {
 //temporary implementation. Should soon replace rollParser() as the default return format.
 //Returns a formatted subsection of the diceRoller object.
 export const rollParserFmt = (rollQuery) => {
-  console.log(rollQuery)
-
   const diceRoller = new DiceRoller();
 
   if (rollQuery) {
@@ -26,7 +25,7 @@ export const rollParserFmt = (rollQuery) => {
     //check if the roll is only a flat modifer and convert it to a value instead of parsing it
     if(/^\d+$/.test(rollQuery)){
       var result_number = Number(rollQuery)
-      return {sum: result_number, diceGroups: ["flat"], rollQuery}
+      return {sum: result_number, diceGroups: [{value: result_number, critical: "none"}], rollQuery}
     }
 
     const result = diceRoller.roll(rollQuery);
@@ -64,7 +63,11 @@ const getRolls = (rolls) => rolls.map((roll) => ({ value: roll.roll, critical: r
 //Returns the total rolled value for a query.
 
 export const rollParserValue = (rollQuery) => {
-  //check for numberical inputs
+  //check if the roll is only a flat modifer and convert it to a value instead of parsing it
+  if(/^\d+$/.test(rollQuery)){
+    var result_number = Number(rollQuery)
+    return result_number
+  }
 
   const diceRoller = new DiceRoller();
   if (rollQuery) {
