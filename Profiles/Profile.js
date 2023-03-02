@@ -1,0 +1,141 @@
+import React, { useReducer, useState } from "react";
+import { ScrollView, StyleSheet, View } from "react-native";
+import "react-native-get-random-values";
+import { Checkbox, List, Modal, Portal, RadioButton, Text, TextInput } from "react-native-paper";
+import { v4 as uuid } from "uuid";
+import presets from "./presets";
+import { useProfiles } from "./ProfileContext";
+import SavedRollEdit from "./SavedRollEdit";
+
+// Create copy of profile to safely edit
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "INIT":
+      return action.payload;
+    case "RENAME_PROFILE":
+      // {name}
+      return { ...state, name: action.payload.name };
+    case "ROLL_PUSH":
+      // {roll}
+      return {
+        ...state,
+        savedRolls: [...state.savedRolls, { ...action.payload.roll, id: uuid() }],
+      };
+    case "ROLL_REMOVE":
+      // {rollId}
+      return {
+        ...state,
+        savedRolls: state.savedRolls.filter((roll) => roll.id !== action.payload.rollId),
+      };
+    case "SET_DICE":
+      // {dice}
+      return { ...state, dice: action.payload.dice };
+    default:
+      throw `Unknown action type: ${action.type}`;
+  }
+};
+
+const styles = StyleSheet.create({
+  listItem: {
+    backgroundColor: "white",
+    borderTopWidth: 1,
+    borderColor: "grey",
+  },
+});
+
+const initDice = [
+  { type: "d20", checked: false },
+  { type: "d12", checked: false },
+  { type: "d10", checked: false },
+  { type: "d8", checked: false },
+  { type: "d6", checked: false },
+  { type: "d4", checked: false },
+  { type: "d100", checked: false },
+  { type: "flat", checked: false },
+  { type: "fate", checked: false },
+];
+
+export default function Profile({ profile }) {
+  // const [profile, profilesDispatch] = useReducer(reducer, profileToEdit);
+  const { profilesDispatch } = useProfiles();
+  const [selectedSavedRoll, setSelectedSavedRoll] = useState(null);
+  const [name, setName] = useState(profile.name);
+  const [dice, setDice] = useState(() =>
+    initDice.map((die) => ({ ...die, checked: profile.dice.includes(die.type) }))
+  );
+  console.log(dice);
+  const handleNameChange = (value) => setName(value);
+
+  const handleNameBlur = () =>
+    profilesDispatch({ type: "UPDATE_PROFILE", payload: { ...profile, name } });
+
+  const handleDiceChange = (type) => {
+    setDice((prevDice) => {
+      const newDice = prevDice.map((die) =>
+        die.type === type ? { ...die, checked: !die.checked } : die
+      );
+      const diceList = [];
+      newDice.forEach((die) => die.checked && diceList.push(die.type));
+      profilesDispatch({ type: "UPDATE_PROFILE", payload: { ...profile, dice: diceList } });
+      return newDice;
+    });
+  };
+  // const handleDiceChange = (value) => {
+  // };
+
+  return (
+    <ScrollView style={{ padding: 16 }}>
+      <View style={{ marginBottom: 16 }}>
+        <TextInput
+          label="Name"
+          value={name}
+          onChangeText={handleNameChange}
+          onBlur={handleNameBlur}
+        />
+      </View>
+      <View style={{ marginBottom: 16, borderWidth: 1 }}>
+        <List.Accordion title="Saved Rolls">
+          <List.Item
+            title="Add new saved roll"
+            onPress={() => setSelectedSavedRoll({ new: true })}
+            style={styles.listItem}
+            left={(props) => <List.Icon {...props} icon="plus-circle-outline" />}
+            accessibilityLabel="Add new saved roll"
+            accessibilityHint="Opens a modal for creating a new saved roll"
+          />
+          {profile.savedRolls.map((savedRoll) => (
+            <List.Item
+              key={savedRoll.id}
+              title={savedRoll.name}
+              description={savedRoll.dice}
+              onPress={() => setSelectedSavedRoll(savedRoll)}
+              style={styles.listItem}
+              accessibilityLabel={`Edit saved roll ${savedRoll.name}`}
+            />
+          ))}
+        </List.Accordion>
+      </View>
+      <View style={{ borderWidth: 1, marginBottom: 16 }}>
+        <List.Accordion title="Dice">
+          {dice.map((die) => (
+            <List.Item
+              key={die.type}
+              style={styles.listItem}
+              onPress={() => handleDiceChange(die.type)}
+              title={die.type}
+              right={() => <Checkbox status={die.checked ? "checked" : "unchecked"} />}
+              accessibilityLabel={`${die.checked ? "Remove" : "Add"} ${die.type} ${
+                die.checked ? "from" : "to"
+              } profile`}
+            />
+          ))}
+        </List.Accordion>
+      </View>
+      <SavedRollEdit
+        visible={Boolean(selectedSavedRoll)}
+        savedRoll={selectedSavedRoll}
+        handleDismiss={() => setSelectedSavedRoll(null)}
+      />
+    </ScrollView>
+  );
+}
