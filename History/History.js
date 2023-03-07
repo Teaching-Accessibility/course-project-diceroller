@@ -1,7 +1,13 @@
 import React from "react";
-import { ScrollView, View } from "react-native";
+import { ScrollView, View, StyleSheet } from "react-native";
 import { Appbar, List, Text } from "react-native-paper";
 import { useProfiles } from "../Profiles/ProfileContext";
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 8,
+    flex: 1,
+  }})
 
 const HistoryItem = ({ historyItem }) => {
   // <ListItem
@@ -35,7 +41,7 @@ export default function History() {
   };
   // Add dropdown to view individual results
   return (
-    <ScrollView>
+    <View style={styles.container}>
       <Appbar.Header>
         <Appbar.Content title="History" />
         <Appbar.Action
@@ -46,15 +52,20 @@ export default function History() {
           disabled={!profile.history.length}
         />
       </Appbar.Header>
-      {profile.history.length ? (
-        profile.history.map((historyItem) => (
-          <HistoryItem key={historyItem.id} historyItem={historyItem} />
-        ))
-      ) : (
-        <Text variant="headlineLarge" style={{ textAlign: "center", marginTop: 16 }}>
-          History Empty
-        </Text>
-      )}
-    </ScrollView>
+      <ScrollView>
+        {profile.history.length ? (
+          <View style={{flexDirection: "column-reverse"}}>
+            {profile.history.map((historyItem) => (
+              <HistoryItem key={historyItem.id} historyItem={historyItem} />
+            ))}
+          </View>
+        ) : (
+          <Text variant="headlineLarge" style={{ textAlign: "center", marginTop: 16 }}>
+            History Empty
+          </Text>
+        )}
+      </ScrollView>
+    </View>
+    
   );
 }
