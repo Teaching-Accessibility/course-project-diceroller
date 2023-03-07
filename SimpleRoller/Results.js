@@ -29,7 +29,10 @@ export default function Results({ results }) {
       </Text>
       {results && (
         <>
-          <Text variant="displaySmall" style={{ textAlign: "center", fontWeight: "bold" }}>
+          <Text
+            variant="displaySmall"
+            style={{ textAlign: "center", fontWeight: "bold" }}
+            aria-live="assertive">
             {results.sum}
           </Text>
           <View

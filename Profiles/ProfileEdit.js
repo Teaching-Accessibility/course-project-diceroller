@@ -1,21 +1,11 @@
 import React, { useReducer, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import "react-native-get-random-values";
-import {
-  Checkbox,
-  List,
-  Modal,
-  Portal,
-  RadioButton,
-  Text,
-  TextInput,
-  useTheme,
-} from "react-native-paper";
+import { Checkbox, List, Modal, Portal, RadioButton, Text, TextInput } from "react-native-paper";
 import { v4 as uuid } from "uuid";
 import presets from "./presets";
 import { useProfiles } from "./ProfileContext";
 import SavedRollEdit from "./SavedRollEdit";
-import MCIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 // Create copy of profile to safely edit
 const reducer = (state, action) => {
@@ -70,19 +60,14 @@ export default function Profile({ profile }) {
   const { profilesDispatch } = useProfiles();
   const [selectedSavedRoll, setSelectedSavedRoll] = useState(null);
   const [name, setName] = useState(profile.name);
-  const [system, setSystem] = useState(profile.system);
-  const theme = useTheme();
   const [dice, setDice] = useState(() =>
     initDice.map((die) => ({ ...die, checked: profile.dice.includes(die.type) }))
   );
 
   const handleNameChange = (value) => setName(value);
-  const handleSystemChange = (value) => setSystem(value);
 
   const handleNameBlur = () =>
     profilesDispatch({ type: "UPDATE_PROFILE", payload: { ...profile, name } });
-  const handleSystemBlur = () =>
-    profilesDispatch({ type: "UPDATE_PROFILE", payload: { ...profile, system } });
 
   const handleDiceChange = (type) => {
     setDice((prevDice) => {
@@ -95,10 +80,8 @@ export default function Profile({ profile }) {
       return newDice;
     });
   };
-
-  const handleDelete = () => {
-    profilesDispatch({ type: "REMOVE_PROFILE", payload: { id: profile.id } });
-  };
+  // const handleDiceChange = (value) => {
+  // };
 
   return (
     <ScrollView style={{ padding: 16 }}>
@@ -110,16 +93,8 @@ export default function Profile({ profile }) {
           onBlur={handleNameBlur}
         />
       </View>
-      <View style={{ marginBottom: 16 }}>
-        <TextInput
-          label="System"
-          value={system}
-          onChangeText={handleSystemChange}
-          onBlur={handleSystemBlur}
-        />
-      </View>
       <View style={{ marginBottom: 16, borderWidth: 1 }}>
-        <List.Accordion title="Saved Rolls" accessibilityLabel="Open saved rolls accordion">
+        <List.Accordion title="Saved Rolls">
           <List.Item
             title="Add new saved roll"
             onPress={() => setSelectedSavedRoll({ new: true })}
@@ -155,17 +130,6 @@ export default function Profile({ profile }) {
             />
           ))}
         </List.Accordion>
-      </View>
-      <View style={{ marginLeft: "auto", marginRight: "auto" }}>
-        <MCIcons.Button
-          onPress={handleDelete}
-          name="delete"
-          size={28}
-          backgroundColor={theme.colors.primary}
-          accessibilityLabel="Delete profile"
-          style={{ marginRight: 4 }}>
-          Remove
-        </MCIcons.Button>
       </View>
       <SavedRollEdit
         visible={Boolean(selectedSavedRoll)}

@@ -15,16 +15,22 @@ function ProfilesHome({ profiles, navigation }) {
 
   const handleAddProfile = (newProfile) => {
     profilesDispatch({ type: "ADD_PROFILE", payload: newProfile });
+    setAddProfileOpen(false);
   };
 
   // TODO: Create modal that opens and the user can add a name and select from a preset
 
   return (
     <View>
-      <AddProfile visible={addProfileOpen} handleAddProfile={handleAddProfile} />
+      <AddProfile
+        visible={addProfileOpen}
+        handleAddProfile={handleAddProfile}
+        handleDismiss={() => setAddProfileOpen(false)}
+      />
       <Appbar.Header>
         <Appbar.Content title="Profiles" />
         <Appbar.Action
+          onPress={() => setAddProfileOpen(true)}
           icon="plus"
           size={30}
           accessibilityLabel="Add Profile"
@@ -56,7 +62,12 @@ export default function Profiles() {
         {({ navigation }) => <ProfilesHome profiles={profiles} navigation={navigation} />}
       </Stack.Screen>
       {profiles.map((profile) => (
-        <Stack.Screen key={profile.id} name={profile.id} options={{ title: profile.name }}>
+        <Stack.Screen
+          key={profile.id}
+          name={profile.id}
+          options={{
+            title: profile.name,
+          }}>
           {() => <Profile profile={profile} />}
         </Stack.Screen>
       ))}

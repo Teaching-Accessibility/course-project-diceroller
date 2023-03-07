@@ -122,8 +122,8 @@ const defaultProfile = {
   system: "D&D 5e",
   dice: ["d20", "d12", "d10", "d8", "d6", "d4", "d100", "flat"],
   // Create dictionary with functions correlating to the names
-  preRollModifiers: ["Advantage", "Disadvantage", "Exploding"],
-  postRollModifiers: [],
+  // preRollModifiers: ["Advantage", "Disadvantage", "Exploding"],
+  // postRollModifiers: [],
   savedRolls: [
     { id: 1, name: "Light crossbow", dice: "1d20 + 8" },
     { id: 2, name: "Meteor Swarm", dice: "20d6 + 20d6" },

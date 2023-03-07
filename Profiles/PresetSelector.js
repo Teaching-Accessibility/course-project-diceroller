@@ -1,29 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import { View } from "react-native";
-import { List, Modal, Portal, RadioButton, Text } from "react-native-paper";
+import { Button, List, Modal, Portal, RadioButton, Text } from "react-native-paper";
+import presets from "./presets";
+import { useProfiles } from "./ProfileContext";
 
-export default function PresetSelector() {
-  const [modalVisible, setModalVisible] = useState();
-  const [selected, setSelected] = useState();
+export default function PresetSelector({ selectedPreset, setSelectedPreset }) {
+  const { profile } = useProfiles();
 
   return (
-    <View>
+    <View style={{ paddingVertical: 8 }}>
       <Text variant="labelLarge">Preset System Profiles</Text>
-      <List.Item onPress={() => setModalVisible(true)}>Preset System Profiles</List.Item>
-      <Portal>
-        <Modal visible={modalVisible} onDismiss={() => setModalVisible(false)}>
-          {presets.map((preset) => (
-            <RadioButton
-              key={preset.id}
-              value={preset.name}
-              status={selected === preset.id ? "checked" : "unchecked"}
-              onPress={() => setSelected(preset.id)}
-            />
-          ))}
-        </Modal>
-      </Portal>
-      <Text>{profile.system}</Text>
-      {/* Make into a dropdown of presets */}
+      <RadioButton.Group
+        value={selectedPreset}
+        onValueChange={(newValue) => setSelectedPreset(newValue)}>
+        {presets.map((preset) => (
+          <RadioButton.Item
+            key={preset.system}
+            label={preset.system}
+            value={preset.system}
+            accessibilityState={{ checked: selectedPreset === preset.system }}
+          />
+        ))}
+      </RadioButton.Group>
     </View>
   );
 }

@@ -1,7 +1,7 @@
 export default [
-  { name: "Custom" },
+  { system: "Custom", dice: [], savedRolls: [] },
   {
-    name: "D&D 5e",
+    system: "D&D 5e",
     dice: ["d20", "d12", "d10", "d8", "d6", "d4", "d100", "flat"],
     savedRolls: [
       { id: 1, name: "Crossbow Attack", dice: "1d20 + 5" },
@@ -10,12 +10,12 @@ export default [
     ],
   },
   {
-    name: "Powered by the Apocalypse",
+    system: "Powered by the Apocalypse",
     dice: ["d6"],
     savedRolls: [{ id: 1, name: "Core", dice: "2d6" }],
   },
   {
-    name: "Kids on Stuff",
+    system: "Kids on Stuff",
     dice: ["d20", "d12", "d10", "d8", "d6", "d4"],
     savedRolls: [
       { id: 1, name: "Grit", dice: "1d20", modifiers: ["exploding"] },

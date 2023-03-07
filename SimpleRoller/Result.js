@@ -28,7 +28,9 @@ const styles = StyleSheet.create({
 
 export default function Result({ rollGroup, groupIdx }) {
   return (
-    <View style={[styles.rollsContainer, { flexGrow: rollGroup.type === "die" ? 5 : 1 }]}>
+    <View
+      style={[styles.rollsContainer, { flexGrow: rollGroup.type === "die" ? 5 : 1 }]}
+      accessible>
       {rollGroup.type === "die" ? (
         <>
           <View style={styles.rollGroupDie}>
