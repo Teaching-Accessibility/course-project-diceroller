@@ -32,7 +32,8 @@ export default function Results({ results }) {
           <Text
             variant="displaySmall"
             style={{ textAlign: "center", fontWeight: "bold" }}
-            aria-live="assertive">
+            aria-live="assertive"
+            accessibilityLiveRegion="assertive">
             {results.sum}
           </Text>
           <View

@@ -119,7 +119,10 @@ export default function Profile({ profile }) {
         />
       </View>
       <View style={{ marginBottom: 16, borderWidth: 1 }}>
-        <List.Accordion title="Saved Rolls" accessibilityLabel="Open saved rolls accordion">
+        <List.Accordion
+          title="Saved Rolls"
+          accessibilityLabel="Saved rolls accordion"
+          accessibilityHint="Hey there">
           <List.Item
             title="Add new saved roll"
             onPress={() => setSelectedSavedRoll({ new: true })}

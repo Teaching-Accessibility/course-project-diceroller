@@ -166,21 +166,19 @@ export default function SimpleRoller() {
     });
     return rollStr;
   })();
-
+  console.log(rollString);
   return (
     <GestureDetector gesture={gesture}>
       <View style={styles.container}>
         <View style={styles.topRow}>
           <View style={styles.rollDisplayContainer}>
-            <Text variant="titleLarge" aria-label="Roll formula">
-              {rollString ? (
-                rollString
-              ) : (
-                <Text variant="titleLarge" style={{ fontStyle: "italic" }}>
-                  Enter a formula
-                </Text>
-              )}
-            </Text>
+            {rollString ? (
+              <Text variant="titleLarge">{rollString}</Text>
+            ) : (
+              <Text variant="titleLarge" style={{ fontStyle: "italic" }}>
+                Enter a formula
+              </Text>
+            )}
           </View>
           <View style={{ marginBottom: 16, flexDirection: "row", justifyContent: "space-between" }}>
             <Button mode="outlined" uppercase>
@@ -198,11 +196,13 @@ export default function SimpleRoller() {
             {profile.name}
           </Text>
           <View style={styles.diceContainer}>
-            {profile.dice.map((die) => (
+            {rollQuery.map((die) => (
               <Die
-                key={die}
-                type={die}
+                key={die.type}
+                type={die.type}
+                count={die.count}
                 selected={selectedDie === die}
+                updateRollQuery={updateRollQuery}
                 handlePress={handleDiePress}
               />
             ))}

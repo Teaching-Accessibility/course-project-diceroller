@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Button, Modal, Portal, Text, TextInput } from "react-native-paper";
 import presets from "./presets";
@@ -21,6 +21,7 @@ export default function AddProfile({ visible, handleAddProfile, handleDismiss })
   const [selectedPreset, setSelectedPreset] = useState("Custom");
   const [name, setName] = useState("");
   const [error, setError] = useState(false);
+  const modalRef = useRef();
 
   const handleNameChange = (value) => {
     console.log(value);
@@ -28,6 +29,9 @@ export default function AddProfile({ visible, handleAddProfile, handleDismiss })
   };
 
   useEffect(() => {
+    if (visible) {
+      // modalRef.current?.focus();
+    }
     setSelectedPreset("Custom");
     setName("");
     setError(false);
@@ -51,10 +55,12 @@ export default function AddProfile({ visible, handleAddProfile, handleDismiss })
           Add a New Profile
         </Text>
         <TextInput
+          autoFocus
           label="Name"
-          // placeholder={error && "Enter a name"}
+          placeholder={error && "Enter a name"}
           value={name}
-          // error={error}
+          ref={modalRef}
+          error={error}
           onChangeText={handleNameChange}
         />
         <PresetSelector selectedPreset={selectedPreset} setSelectedPreset={setSelectedPreset} />

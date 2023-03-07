@@ -91,14 +91,17 @@ export default function SavedRollEdit({ savedRoll, visible, handleDismiss }) {
             justifyContent: "space-between",
             alignItems: "center",
           }}>
-          <Text variant="headlineSmall" style={{ marginBottom: 8 }}>
+          <Text variant="headlineSmall" role="heading" style={{ marginBottom: 8 }}>
             {isNew ? "Create New Saved Roll" : "Edit Saved Roll"}
           </Text>
           {!isNew && <IconButton icon="delete" size={26} onPress={handleDelete} />}
         </View>
         <View style={styles.inputs}>
           <TextInput
+            autoFocus
             label="Name"
+            accessibilityLabel="Saved roll name"
+            accessibilityHint={`${isNew ? "Enter" : "Edit"} saved roll name`}
             value={name}
             error={error}
             onChangeText={(text) => setName(text)}

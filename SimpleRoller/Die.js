@@ -42,7 +42,7 @@ const color_table_default = {
   d4: "#46eaf0",
 };
 
-export default function Die({ type, selected, handlePress }) {
+export default function Die({ type, count, selected, updateRollQuery, handlePress }) {
   const theme = useTheme();
   // Add accessibility action 'increment'/'decrement' for the die action
 
@@ -54,24 +54,44 @@ export default function Die({ type, selected, handlePress }) {
     icon_color = icon.color;
   }
 
+  const handleAccessibilityAction = (event) => {
+    switch (event.nativeEvent.actionName) {
+      case "increment":
+        updateRollQuery(type, 1);
+        break;
+      case "decrement":
+        updateRollQuery(type, -1);
+        break;
+    }
+  };
+
   return (
-    <Icon.Button
-      name={icon_name}
-      color={icon_color}
-      size={30}
-      mode="contained"
-      uppercase
-      backgroundColor="#312838"
-      borderWidth={3}
-      borderColor={selected ? icon_color : "#ffffff"}
-      buttonColor={selected && theme.colors.primaryContainer}
-      onPress={() => handlePress(type)}
-      aria-selected={selected}
-      accessible={true}>
-      <Text variant="titleMedium" style={{ color: selected ? icon_color : theme.colors.onPrimary }}>
-        {type}
-      </Text>
-    </Icon.Button>
+    <View>
+      <Icon.Button
+        name={icon_name}
+        color={icon_color}
+        size={30}
+        mode="contained"
+        uppercase
+        backgroundColor="#312838"
+        borderWidth={3}
+        borderColor={selected ? icon_color : "#ffffff"}
+        buttonColor={selected && theme.colors.primaryContainer}
+        accessible={true}
+        accessibilityValue={{ min: -100, max: 100, now: count }}
+        accessibilityActions={[
+          { name: "increment", label: "Increment die" },
+          { name: "decrement", label: "Decrement die" },
+        ]}
+        onAccessibilityAction={handleAccessibilityAction}
+        onPress={() => handlePress(type)}>
+        <Text
+          variant="titleMedium"
+          style={{ color: selected ? icon_color : theme.colors.onPrimary }}>
+          {type}
+        </Text>
+      </Icon.Button>
+    </View>
   );
 }
 
