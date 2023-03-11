@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
 });
 
 const icon_table = {
-  default: "plus",
+  base: "plus",
   d20: "dice-d20",
   d12: "dice-d12",
   d10: "dice-d10",
@@ -23,20 +23,40 @@ const icon_table = {
 };
 
 const color_table_protonopia = {
-  default: "#ffc33b",
-  d20: "#2271b2",
-  d12: "#f748a5",
+  base: "#ffc33b",
+  d20: "#ffb2fd",
+  d12: "#f0e422",
   d10: "#d55e00",
-  d8: "#f0e422",
+  d8: "#f748a5",
   d6: "#3db7e9",
-  d4: "#359b73",
+  d4: "#42c290",
+};
+
+const color_table_blank = {
+  base: "#ffffff",
+  d20: "#ffffff",
+  d12: "#ffffff",
+  d10: "#ffffff",
+  d8: "#ffffff",
+  d6: "#ffffff",
+  d4: "#ffffff",
+};
+
+const color_table_wong = {
+  base: "#FFFFFF",
+  d20: "#E69F00",
+  d12: "#56B4E9",
+  d10: "#009E73",
+  d8: "#F0E442",
+  d6: "#D55E00",
+  d4: "#CC79A7",
 };
 
 const color_table_default = {
-  default: "#ffc33b",
-  d20: "#ed3737",
+  base: "#ffc33b",
+  d20: "#fc5656",
   d12: "#5fe85d",
-  d10: "#524ff0",
+  d10: "#8c7aff",
   d8: "#ede737",
   d6: "#ea46f0",
   d4: "#46eaf0",
@@ -46,14 +66,15 @@ export default function Die({ type, count, selected, updateRollQuery, handlePres
   const theme = useTheme();
   // Add accessibility action 'increment'/'decrement' for the die action
 
-  const icon = getIcon(type);
-  var icon_name = icon_table["default"];
-  var icon_color = color_table_default.default;
+  const icon = getIcon(type, "w");
+  var icon_name = icon_table["base"];
+  var icon_color = color_table_default.base;
   if (icon) {
     icon_name = icon.name;
     icon_color = icon.color;
   }
 
+  
   const handleAccessibilityAction = (event) => {
     switch (event.nativeEvent.actionName) {
       case "increment":
@@ -64,6 +85,7 @@ export default function Die({ type, count, selected, updateRollQuery, handlePres
         break;
     }
   };
+  
 
   return (
     <View>
@@ -99,13 +121,21 @@ export default function Die({ type, count, selected, updateRollQuery, handlePres
 // p = protonopia
 function getIcon(type, flag = "none") {
   var color_table = color_table_default;
-  if (flag == "p") {
-    color_table = color_table_protonopia;
+  switch (flag){
+    case "p":
+      color_table = color_table_protonopia
+      break;
+    case "b":
+      color_table = color_table_blank
+      break;
+    case "w":
+      color_table = color_table_wong
+      break;
   }
 
   if (type in icon_table) {
     return { name: icon_table[type], color: color_table[type] };
   } else {
-    return null;
+    return {name: icon_table["base"], color: color_table["base"]};
   }
 }
