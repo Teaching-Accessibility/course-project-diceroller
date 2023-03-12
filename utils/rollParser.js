@@ -22,10 +22,17 @@ export const rollParserFmt = (rollQuery) => {
 
   if (rollQuery) {
 
+    console.log(rollQuery)
+
     //check if the roll is only a flat modifer and convert it to a value instead of parsing it
     if(/^\d+$/.test(rollQuery)){
       var result_number = Number(rollQuery)
       return {sum: result_number, diceGroups: [{value: result_number, critical: "none"}], rollQuery}
+    }
+
+    //check to see if the first character in the rollQuery is a - sign and remove it. Seems to pad a space for some reason
+    if(rollQuery.charAt(1)=='-'){
+      rollQuery = "0" + rollQuery
     }
 
     const result = diceRoller.roll(rollQuery);

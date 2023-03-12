@@ -73,7 +73,6 @@ export default function Die({ type, count, selected, updateRollQuery, handlePres
     icon_name = icon.name;
     icon_color = icon.color;
   }
-
   
   const handleAccessibilityAction = (event) => {
     switch (event.nativeEvent.actionName) {
@@ -85,17 +84,16 @@ export default function Die({ type, count, selected, updateRollQuery, handlePres
         break;
     }
   };
-  
 
   return (
     <View>
       <Icon.Button
         name={icon_name}
-        color={icon_color}
+        color={selected? "#000":icon_color}
         size={30}
         mode="contained"
         uppercase
-        backgroundColor="#312838"
+        backgroundColor={selected ? "#fff" : "#312838"}
         borderWidth={3}
         borderColor={selected ? icon_color : "#ffffff"}
         buttonColor={selected && theme.colors.primaryContainer}
@@ -109,7 +107,7 @@ export default function Die({ type, count, selected, updateRollQuery, handlePres
         onPress={() => handlePress(type)}>
         <Text
           variant="titleMedium"
-          style={{ color: selected ? icon_color : theme.colors.onPrimary }}>
+          style={{ color: selected ? "#000000" : theme.colors.onPrimary}}>
           {type}
         </Text>
       </Icon.Button>

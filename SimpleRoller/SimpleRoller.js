@@ -14,8 +14,10 @@ const styles = StyleSheet.create({
     padding: 8,
     flex: 1,
   },
-  clearButton: {
+  upperButton: {
     marginLeft: 8,
+    backgroundColor: "#312838",
+    color: "#fff",
     // flex: 0.2,
   },
   rollDisplayContainer: {
@@ -167,6 +169,7 @@ export default function SimpleRoller() {
     return rollStr;
   })();
   console.log(rollString);
+  console.log(selectedDie)
   return (
     <GestureDetector gesture={gesture}>
       <View style={styles.container}>
@@ -176,15 +179,15 @@ export default function SimpleRoller() {
               <Text variant="titleLarge">{rollString}</Text>
             ) : (
               <Text variant="titleLarge" style={{ fontStyle: "italic" }}>
-                Enter a formula
+                Add some dice...
               </Text>
             )}
           </View>
           <View style={{ marginBottom: 16, flexDirection: "row", justifyContent: "space-between" }}>
-            <Button mode="outlined" uppercase>
+            <Button mode="contained" uppercase>
               Save Roll
             </Button>
-            <Button style={styles.clearButton} mode="outlined" uppercase onPress={handleClear}>
+            <Button mode="contained" uppercase onPress={handleClear}>
               Clear
             </Button>
           </View>
@@ -201,7 +204,7 @@ export default function SimpleRoller() {
                 key={die.type}
                 type={die.type}
                 count={die.count}
-                selected={selectedDie === die}
+                selected={selectedDie === die.type}
                 updateRollQuery={updateRollQuery}
                 handlePress={handleDiePress}
               />
