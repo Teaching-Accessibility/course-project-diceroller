@@ -2,6 +2,7 @@ import React, { useReducer, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import "react-native-get-random-values";
 import {
+  Button,
   Checkbox,
   List,
   Modal,
@@ -67,7 +68,12 @@ const initDice = [
 
 export default function Profile({ profile }) {
   // const [profile, profilesDispatch] = useReducer(reducer, profileToEdit);
-  const { profilesDispatch } = useProfiles();
+  const {
+    profile: activeProfile,
+    profiles,
+    profilesDispatch,
+    switchCurrentProfile,
+  } = useProfiles();
   const [selectedSavedRoll, setSelectedSavedRoll] = useState(null);
   const [name, setName] = useState(profile.name);
   const [system, setSystem] = useState(profile.system);
@@ -97,12 +103,22 @@ export default function Profile({ profile }) {
   };
 
   const handleDelete = () => {
-    profilesDispatch({ type: "REMOVE_PROFILE", payload: { id: profile.id } });
+    if (profiles.length !== 1) {
+      profilesDispatch({ type: "REMOVE_PROFILE", payload: { id: profile.id } });
+    }
   };
+
+  const isActiveProfile = activeProfile?.id === profile?.id;
 
   return (
     <ScrollView style={{ padding: 16 }}>
-      <View style={{ marginBottom: 16 }}>
+      <Button
+        onPress={() => switchCurrentProfile(profile.id)}
+        mode="contained"
+        disabled={isActiveProfile}>
+        Activate
+      </Button>
+      <View style={{ marginVertical: 16 }}>
         <TextInput
           label="Name"
           value={name}

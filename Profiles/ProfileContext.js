@@ -28,7 +28,8 @@ const reducer = (state, action) => {
     case "INIT":
       return action.payload;
     case "ADD_PROFILE":
-      profiles = [...state, { ...action.payload, id: uuid() }];
+      profiles = [...state, { ...action.payload, history: [], id: uuid() }];
+      storeData("profiles", profiles);
       return profiles;
     case "UPDATE_PROFILE":
       // {profile}
@@ -162,8 +163,10 @@ export const ProfileContextProvider = ({ children }) => {
   const profile = profiles?.find((profile) => profile.id === currentProfile);
 
   const switchCurrentProfile = (id) => {
-    setCurrentProfile(id);
-    storeData("currentProfile", id);
+    if (id !== profile?.id) {
+      setCurrentProfile(id);
+      storeData("currentProfile", id);
+    }
   };
 
   return (

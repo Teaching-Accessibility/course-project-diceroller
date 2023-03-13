@@ -4,7 +4,6 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import MCIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import FAIcons from "react-native-vector-icons/FontAwesome5";
 
-import AdvancedRoller from "./AdvancedRoller/AdvancedRoller";
 import History from "./History/History";
 import { ProfileContextProvider } from "./Profiles/ProfileContext";
 import Profiles from "./Profiles/Profiles";
@@ -12,6 +11,7 @@ import Settings from "./Settings/Settings";
 import SimpleRoller from "./SimpleRoller/SimpleRoller";
 import { MD3LightTheme as DefaultTheme, Provider } from "react-native-paper";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+import SavedRoller from "./SavedRoller/SavedRoller";
 
 function App() {
   const Tab = createMaterialBottomTabNavigator();
@@ -31,12 +31,12 @@ function App() {
                 }}
               />
               <Tab.Screen
-                name="Advanced Roller"
-                component={AdvancedRoller}
+                name="Saved Roller"
+                component={SavedRoller}
                 options={{
-                  tabBarLabel: "Advanced",
+                  tabBarLabel: "Saved",
                   tabBarIcon: ({ color }) => (
-                    <MCIcons name="calculator-variant" color={color} size={26} />
+                    <MCIcons name="content-save" color={color} size={26} />
                   ),
                 }}
               />

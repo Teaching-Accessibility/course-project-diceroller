@@ -60,6 +60,10 @@ export default function SimpleRoller() {
     }
   }, [profile]);
 
+  useEffect(() => {
+    setRollQuery(initialQuery);
+  }, [profile?.dice]);
+
   if (!profile || !rollQuery) {
     return <Loading />;
   }
@@ -168,8 +172,7 @@ export default function SimpleRoller() {
     });
     return rollStr;
   })();
-  console.log(rollString);
-  console.log(selectedDie)
+
   return (
     <GestureDetector gesture={gesture}>
       <View style={styles.container}>
