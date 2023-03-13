@@ -11,7 +11,6 @@ export default function SavedRoller() {
 
   const handleRoll = (rollQuery) => {
     const resultsRoll = rollParserFmt(rollQuery);
-    console.log(resultsRoll);
     if (resultsRoll !== null) {
       profilesDispatch({
         type: "HISTORY_PUSH",
@@ -26,7 +25,10 @@ export default function SavedRoller() {
       <View style={{ flex: 0.5 }}>
         <Results results={results} />
       </View>
-      <Button mode="contained" style={{ marginHorizontal: 24, marginVertical: 8 }}>
+      <Button
+        onPress={() => setResults()}
+        mode="contained"
+        style={{ marginHorizontal: 24, marginVertical: 8 }}>
         Clear
       </Button>
       <ScrollView style={{ flex: 0.7 }}>

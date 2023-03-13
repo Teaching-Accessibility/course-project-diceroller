@@ -5,9 +5,10 @@ import { useProfiles } from "../Profiles/ProfileContext";
 
 const styles = StyleSheet.create({
   container: {
-    padding: 8,
+    // padding: 8,
     flex: 1,
-  }})
+  },
+});
 
 const HistoryItem = ({ historyItem }) => {
   // <ListItem
@@ -54,7 +55,7 @@ export default function History() {
       </Appbar.Header>
       <ScrollView>
         {profile.history.length ? (
-          <View style={{flexDirection: "column-reverse"}}>
+          <View style={{ flexDirection: "column-reverse" }}>
             {profile.history.map((historyItem) => (
               <HistoryItem key={historyItem.id} historyItem={historyItem} />
             ))}
@@ -66,6 +67,5 @@ export default function History() {
         )}
       </ScrollView>
     </View>
-    
   );
 }
