@@ -101,14 +101,13 @@ export default function Profile({ profile }) {
       return newDice;
     });
   };
+  const isActiveProfile = activeProfile?.id === profile?.id;
 
   const handleDelete = () => {
-    if (profiles.length !== 1) {
+    if (isActiveProfile) {
       profilesDispatch({ type: "REMOVE_PROFILE", payload: { id: profile.id } });
     }
   };
-
-  const isActiveProfile = activeProfile?.id === profile?.id;
 
   return (
     <ScrollView style={{ padding: 16 }}>

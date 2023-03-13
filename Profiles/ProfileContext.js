@@ -98,6 +98,7 @@ const reducer = (state, action) => {
       storeData("profiles", profiles);
     case "ROLL_REMOVE":
       // {rollId, profileId}
+
       profiles = state.map((profile) => {
         if (profile.id === action.payload.profileId) {
           return {
@@ -137,7 +138,7 @@ export const ProfileContextProvider = ({ children }) => {
   useEffect(() => {
     const initProfiles = async () => {
       // Uncomment, reload, then re-comment below line to update saved defaultProfile
-      // await storeData("profiles", [defaultProfile]);
+      await storeData("profiles", [defaultProfile]);
       let profiles = await getData("profiles");
       // If nothing stored, store it
       if (profiles === null) {

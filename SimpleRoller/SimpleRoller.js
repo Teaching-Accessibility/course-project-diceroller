@@ -131,6 +131,7 @@ export default function SimpleRoller() {
 
   const handleRoll = () => {
     const resultsRoll = rollParserFmt(rollString);
+    console.log(resultsRoll);
     if (resultsRoll !== null) {
       profilesDispatch({
         type: "HISTORY_PUSH",

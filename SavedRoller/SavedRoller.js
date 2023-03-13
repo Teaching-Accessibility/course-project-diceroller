@@ -11,6 +11,7 @@ export default function SavedRoller() {
 
   const handleRoll = (rollQuery) => {
     const resultsRoll = rollParserFmt(rollQuery);
+    console.log(resultsRoll);
     if (resultsRoll !== null) {
       profilesDispatch({
         type: "HISTORY_PUSH",
