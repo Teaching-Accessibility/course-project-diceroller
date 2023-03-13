@@ -48,7 +48,7 @@ R2:
 ## Installation
 
 #### A bit hard to set up
-
+Use this instead: [Video demonstration](https://youtu.be/qxIGQqxn-R4)
 1. Clone github
 2. Run `npm install` inside root folder
 3. Follow the instructions [here](https://reactnative.dev/docs/environment-setup), using React Native CLI Quickstart. We used Windows as the development OS and Android as the main focus. Ignore the "Creating a new application" section.
