@@ -3,12 +3,24 @@
 ## Group
 
 - John Bomann
-  - Set up github project and boilerplate
-  - Created home navigation page, implemented navigation
-  - Partially set up rollParser
-  - Created simple roller page UI, implemented some features
-  - Created advanced roller page UI, implemented some features
-  - Created profile context hook for use throughout project, since a lot of the components are dependent on the profile's configurations
+  - R1
+    - Set up github project and boilerplate
+    - Created home navigation page, implemented navigation
+    - Partially set up rollParser
+    - Created simple roller page UI, implemented some features
+    - Created advanced roller page UI, implemented some features
+    - Created profile context hook for use throughout project, since a lot of the components are dependent on the profile's configurations
+  - R2
+    - Implemented swipe gestures on Simple Roller
+    - Updated entire UI to follow Material Design standards, using react-native-paper
+    - Changed navigation to use bottom navigation instead of dashboard navigation
+    - Finished functionality for Simple Roller
+    - Replaced Advanced Roller with Saved Roller, which uses saved rolls
+    - Implemented profile adding, configuration, and context switching on Profiles page
+      - Functionality for adding/removing dice
+      - Functionality for adding/removing saved rolls
+      - Created preset profiles for common game systems
+    - Implemented History
 - Ian Donovan
   - Integrated the dice-roller-parser library by btmorton
   - Implemented rollPraser to work with complex strings, only works for simple roller for now
